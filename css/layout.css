@@ -1,0 +1,21 @@
+.container {
+  width: 345px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+}
+
+.column-full {
+  width: 100%;
+}
+
+.column-half {
+  width: 100%;
+}
+
+.column-75 {
+  width: 75%;
+}
+
+.column-25 {
+  width: 25%;
+}
