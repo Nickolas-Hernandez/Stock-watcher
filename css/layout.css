@@ -19,3 +19,7 @@
 .column-25 {
   width: 25%;
 }
+
+.row {
+  display: flex;
+}
