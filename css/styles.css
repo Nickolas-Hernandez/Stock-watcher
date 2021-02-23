@@ -4,6 +4,10 @@ body {
   color: white;
 }
 
+ul {
+  padding: 0 5px;
+}
+
 .search-bar {
   justify-content: space-between;
 }
@@ -53,4 +57,13 @@ i.fa-pen {
   height: 3px;
   background-color: #393e42;
   border-radius: 5px;
+}
+
+.watchlist-item-head {
+  justify-content: space-between;
+}
+
+.price-column {
+  width: 25%;
+  text-align: center;
 }
