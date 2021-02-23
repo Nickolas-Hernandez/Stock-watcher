@@ -59,6 +59,14 @@ i.fa-pen {
   border-radius: 5px;
 }
 
+.watchlist li {
+  padding: 5px 0;
+}
+
+.watchlist p {
+  font-weight: 300;
+}
+
 .watchlist-item-head {
   justify-content: space-between;
 }
