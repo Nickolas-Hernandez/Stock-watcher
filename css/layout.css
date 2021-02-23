@@ -12,14 +12,6 @@
   width: 100%;
 }
 
-.column-75 {
-  width: 75%;
-}
-
-.column-25 {
-  width: 25%;
-}
-
 .row {
   display: flex;
   flex-wrap: wrap;
