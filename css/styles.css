@@ -1,6 +1,7 @@
 body {
   font-family: "Montserrat", sans-serif;
   background: #00010d;
+  color: white;
 }
 
 .search-bar {
@@ -18,7 +19,10 @@ input#search-input {
   border-radius: 30px;
 }
 
-i.fas.fa-search {
+i {
   color: #393e42;
+}
+
+i.fas.fa-search {
   font-size: 2rem;
 }
