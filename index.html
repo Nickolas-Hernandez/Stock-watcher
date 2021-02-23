@@ -20,21 +20,29 @@
         <input type="text" name="search-field" id="search-input" placeholder="Search Ticker Symbols">
         <i class="fas fa-search"></i>
       </section>
-      <section class="watchlist-section column-half">
-        <header class="watchlist-header row wrap">
-          <h2 class="watchlist-text">My Watchlist</h2>
-          <i class="fas fa-pen"></i>
-          <span class="full-bar column-full"></span>
-        </header>
-        <ul class="watchlist column-full">
-          <li class="watchlist-item-head row column-full">
-            <p class="ticker">SYMBOL</p>
-            <div class="price-column">
-              <p class="price">&dollar;&dollar;&dollar;</p>
-            </div>
-          </li>
-        </ul>
-      </section>
+      <div class="row wrap between">
+        <section class="watchlist-section column-half">
+          <header class="watchlist-header row">
+            <h2 class="watchlist-text">My Watchlist</h2>
+            <i class="fas fa-pen"></i>
+            <span class="full-bar column-full"></span>
+          </header>
+          <ul class="watchlist column-full">
+            <li class="watchlist-item-head row column-full">
+              <p class="ticker">SYMBOL</p>
+              <div class="price-column">
+                <p class="price">&dollar;&dollar;&dollar;</p>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section class="top-news-section column-half">
+          <header class="watchlist-header row">
+            <h2 class="watchlist-text">Top News</h2>
+            <span class="full-bar column-full"></span>
+          </header>
+        </section>
+      </div>
     </div>
   </main>
   <script src="js/data.js"></script>
