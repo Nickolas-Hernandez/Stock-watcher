@@ -3,13 +3,22 @@ body {
   background: #00010d;
 }
 
+.search-bar {
+  justify-content: space-between;
+}
+
 input#search-input {
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
   background-color: #393e42;
   border: none;
   height: 2rem;
-  width: 75%;
+  width: 80%;
   padding: 0 1rem;
   border-radius: 30px;
+}
+
+i.fas.fa-search {
+  color: #393e42;
+  font-size: 2rem;
 }
