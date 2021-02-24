@@ -4,14 +4,14 @@ var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
 var trendingStoriesRequest = 'TRENDING';
 var companyNewsRequest = 'SYMBOL_NEWS';
-var companyStatsRequest = "SYMBOL_STATS"
-var autoCompleteRequest = 'AUTO'
+var companyStatsRequest = 'SYMBOL_STATS';
+var autoCompleteRequest = 'AUTO';
 
 // Functions
 function autoCompleteSuggest(event) {
   removeSuggestionList();
   if (event.target.value.length >= 3) {
-    sendRequestCNBC(autoCompleteRequest, null, event.target.value);
+    sendRequestCNBC(autoCompleteRequest, null, null, event.target.value);
     $suggestionBox.classList.add('active');
   }
 }
@@ -32,8 +32,8 @@ function loadSuggestion(event) {
 function submitSearch(event) {
   // sendRequestAlphaVantage(dailyFunction, $searchInput.value, null);
   // sendRequestAlphaVantage(overviewFunction, $searchInput.value, null);
-  // sendRequestCNBC(companyStatsRequest, $searchInput.value, null);
-  sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
+  sendRequestCNBC(companyStatsRequest, $searchInput.value, data.inputID, null);
+  // sendRequestCNBC(companyNewsRequest, $searchInput.value, null, null);
   $searchInput.value = '';
 }
 
@@ -47,12 +47,12 @@ function createAutoSuggestItem(response) {
 }
 
 function getTrendingStories(event) {
-  sendRequestCNBC(trendingStoriesRequest, null);
+  sendRequestCNBC(trendingStoriesRequest, null, null, null);
 }
 
 // Request Functions
 
-function sendRequestCNBC(requestType, ticker, input) {
+function sendRequestCNBC(requestType, ticker, ID, input) {
   if (ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
   var responseObject;
@@ -76,8 +76,10 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function(){
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
-      console.log('response companyNews', responseObject);
+      // console.log('response companyNews', responseObject);
     });
+  }else if(requestType === companyStatsRequest){
+    xhr.open("GET", `https://cnbc.p.rapidapi.com/symbols/get-summary?issueIds=${ID}`);
   }
   xhr.setRequestHeader('x-rapidapi-key', 'afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e');
   xhr.setRequestHeader('x-rapidapi-host', 'cnbc.p.rapidapi.com');
