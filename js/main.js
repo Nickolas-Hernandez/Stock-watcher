@@ -26,7 +26,7 @@ function removeSuggestionList(){
 
 function submitSearch(event){
   sendRequestAlphaVantage('daily', $searchInput.value, null);
-  // sendRequestAlphaVantage('overview', $searchIcon.value, null);
+  sendRequestAlphaVantage('overview', $searchInput.value, null);
   $searchInput.value = '';
 }
 
@@ -61,6 +61,11 @@ function sendRequestAlphaVantage(type, ticker, keyword){
     });
   }else {
     xhr.open("GET", `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
+    xhr.addEventListener('load', function(){
+      console.log('Testing get overview request')
+      console.log('status (overview) ', xhr.status);
+      console.log('response (overview', xhr.response);
+    });
   }
   xhr.send();
 }
