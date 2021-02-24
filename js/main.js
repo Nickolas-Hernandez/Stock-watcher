@@ -2,18 +2,17 @@
 var $searchInput = document.querySelector('#search-input');
 var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
+var dailyFunction = 'TIME_SERIES_DAILY';
+var overviewFunction = 'OVERVIEW';
+var autoSuggestFunction = 'SYMBOL_SEARCH';
 
 // Functions
 function autoCompleteSuggest(event){
   removeSuggestionList();
   if(event.target.value.length >= 3) {
-    sendRequestAlphaVantage('autocomplete', null, event.target.value);
+    sendRequestAlphaVantage(autoSuggestFunction, null, event.target.value);
+    $suggestionBox.classList.add('active');
   }
-}
-
-function loadSuggestion(event){
-  $searchInput.value = event.target.textContent;
-  removeSuggestionList();
 }
 
 function removeSuggestionList(){
@@ -24,48 +23,47 @@ function removeSuggestionList(){
     }
 }
 
+function loadSuggestion(event){
+  $searchInput.value = event.target.textContent;
+  removeSuggestionList();
+}
+
 function submitSearch(event){
-  sendRequestAlphaVantage('daily', $searchInput.value, null);
-  sendRequestAlphaVantage('overview', $searchInput.value, null);
+  sendRequestAlphaVantage(dailyFunction, $searchInput.value, null);
+  sendRequestAlphaVantage(overviewFunction, $searchInput.value, null);
   $searchInput.value = '';
 }
 
-// Event Listeners + Function Calls
-$searchInput.addEventListener('input', autoCompleteSuggest);
-$suggestionBox.addEventListener('click', loadSuggestion);
-$searchIcon.addEventListener('click', submitSearch);
+function createAutoSuggestItem(string){
+  var suggestionItem = document.createElement('li');
+  suggestionItem.className = 'auto-suggest-item';
+  suggestionItem.textContent = string;
+  $suggestionBox.appendChild(suggestionItem);
+}
 
 // Request Functions
-function sendRequestAlphaVantage(type, ticker, keyword){
+function sendRequestAlphaVantage(functionType, ticker, keyword){
   if(ticker !== null) ticker = ticker.toUpperCase();
-  console.log('ticker (input value):',ticker);
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
-  if(type === 'autocomplete'){
-    xhr.open("GET", `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keyword}&apikey=CPOI5XYGUXDVNA28`);
+  if(functionType === autoSuggestFunction){
+    xhr.open("GET", `https://www.alphavantage.co/query?function=${functionType}&keywords=${keyword}&apikey=CPOI5XYGUXDVNA28`);
     xhr.addEventListener('load', function(){
       for(var i = 0; i <xhr.response.bestMatches.length; i++){
-        $suggestionBox.classList.add('active')
-        var suggestionItem = document.createElement('li');
-        suggestionItem.className = 'auto-suggest-item';
-        suggestionItem.textContent = xhr.response.bestMatches[i]["1. symbol"];
-        $suggestionBox.appendChild(suggestionItem);
+        createAutoSuggestItem(xhr.response.bestMatches[i]["1. symbol"]);
       }
     });
-  }else if( type === 'daily'){
-    xhr.open("GET", `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
+  }else {
+    xhr.open("GET", `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
     xhr.addEventListener('load', function(){
-      console.log('Testing input submission => send request. Expecting response object to be reuturned')
       console.log('status ', xhr.status);
       console.log('response', xhr.response);
-    });
-  }else {
-    xhr.open("GET", `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
-    xhr.addEventListener('load', function(){
-      console.log('Testing get overview request')
-      console.log('status (overview) ', xhr.status);
-      console.log('response (overview', xhr.response);
     });
   }
   xhr.send();
 }
+
+//Event Listeners
+$searchInput.addEventListener('input', autoCompleteSuggest);
+$suggestionBox.addEventListener('click', loadSuggestion);
+$searchIcon.addEventListener('click', submitSearch);
