@@ -36,7 +36,7 @@ input#search-input {
   width: 100%;
   z-index: 1;
   border-radius: 10px;
-  /* display: none; */
+  display: none;
 }
 
 .auto-list.active{

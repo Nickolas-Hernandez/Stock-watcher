@@ -1,6 +1,7 @@
 // Global variables
 var $searchInput = document.querySelector('#search-input');
 var $suggestionBox = document.querySelector('.auto-list');
+var $searchIcon = document.querySelector('.fa-search');
 
 // Functions
 function autoCompleteSuggest(event){
@@ -11,9 +12,6 @@ function autoCompleteSuggest(event){
 }
 
 function loadSuggestion(event){
-  console.log('event', event);
-  console.log('event.target', event.target);
-  console.log('event.target.tCont', event.target.textContent);
   $searchInput.value = event.target.textContent;
   removeSuggestionList();
 }
@@ -26,19 +24,26 @@ function removeSuggestionList(){
     }
 }
 
+function submitSearch(event){
+  sendRequestAlphaVantage('daily', $searchInput.value, null);
+  // sendRequestAlphaVantage('overview', $searchIcon.value, null);
+  $searchInput.value = '';
+}
+
 // Event Listeners + Function Calls
 $searchInput.addEventListener('input', autoCompleteSuggest);
 $suggestionBox.addEventListener('click', loadSuggestion);
+$searchIcon.addEventListener('click', submitSearch);
 
 // Request Functions
 function sendRequestAlphaVantage(type, ticker, keyword){
   if(ticker !== null) ticker = ticker.toUpperCase();
+  console.log('ticker (input value):',ticker);
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
   if(type === 'autocomplete'){
     xhr.open("GET", `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keyword}&apikey=CPOI5XYGUXDVNA28`);
     xhr.addEventListener('load', function(){
-      console.log('status', xhr.status);
       for(var i = 0; i <xhr.response.bestMatches.length; i++){
         $suggestionBox.classList.add('active')
         var suggestionItem = document.createElement('li');
@@ -48,7 +53,12 @@ function sendRequestAlphaVantage(type, ticker, keyword){
       }
     });
   }else if( type === 'daily'){
-  xhr.open("GET", `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
+    xhr.open("GET", `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
+    xhr.addEventListener('load', function(){
+      console.log('Testing input submission => send request. Expecting response object to be reuturned')
+      console.log('status ', xhr.status);
+      console.log('response', xhr.response);
+    });
   }else {
     xhr.open("GET", `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   }
