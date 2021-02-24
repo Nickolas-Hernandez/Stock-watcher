@@ -44,6 +44,10 @@ function createAutoSuggestItem(string) {
   $suggestionBox.appendChild(suggestionItem);
 }
 
+function getTrendingStories(event) {
+  sendRequestCNBC(trendingStoriesRequest, null);
+}
+
 // Request Functions
 function sendRequestAlphaVantage(functionType, ticker, keyword) {
   if (ticker !== null) ticker = ticker.toUpperCase();
@@ -93,4 +97,4 @@ function sendRequestCNBC(requestType, ticker) {
 $searchInput.addEventListener('input', autoCompleteSuggest);
 $suggestionBox.addEventListener('click', loadSuggestion);
 $searchIcon.addEventListener('click', submitSearch);
-window.addEventListener('load', sendRequestCNBC(trendingStoriesRequest, null));
+window.addEventListener('load', getTrendingStories);
