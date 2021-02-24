@@ -75,6 +75,8 @@ function sendRequestCNBC(requestType, ticker){
     xhr.setRequestHeader("x-rapidapi-host", "cnbc.p.rapidapi.com");
     xhr.addEventListener('load', function(){
       responseObject = JSON.parse(xhr.response);
+      responseObject = responseObject.data.mostPopular;
+      console.log('1', responseObject);
     });
   }else{
     xhr.open("GET", `https://cnbc.p.rapidapi.com/news/list-by-symbol?tickersymbol=${ticker}&page=1&pagesize=10`);
@@ -82,6 +84,8 @@ function sendRequestCNBC(requestType, ticker){
     xhr.setRequestHeader("x-rapidapi-host", "cnbc.p.rapidapi.com");
     xhr.addEventListener('load', function(){
       responseObject = JSON.parse(xhr.response);
+      responseObject = responseObject.rss.channel;
+      console.log('2', responseObject);
     });
   }
   xhr.send();
