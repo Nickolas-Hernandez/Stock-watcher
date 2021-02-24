@@ -5,6 +5,8 @@ var $searchIcon = document.querySelector('.fa-search');
 var dailyFunction = 'TIME_SERIES_DAILY';
 var overviewFunction = 'OVERVIEW';
 var autoSuggestFunction = 'SYMBOL_SEARCH';
+var trendingStoriesRequest = 'TRENDING';
+var symbolStoriesRequest = 'SYMBOL';
 
 // Functions
 function autoCompleteSuggest(event){
@@ -31,6 +33,7 @@ function loadSuggestion(event){
 function submitSearch(event){
   sendRequestAlphaVantage(dailyFunction, $searchInput.value, null);
   sendRequestAlphaVantage(overviewFunction, $searchInput.value, null);
+  sendRequestCNBC(symbolStoriesRequest, $searchInput.value);
   $searchInput.value = '';
 }
 
@@ -56,8 +59,29 @@ function sendRequestAlphaVantage(functionType, ticker, keyword){
   }else {
     xhr.open("GET", `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
     xhr.addEventListener('load', function(){
-      console.log('status ', xhr.status);
-      console.log('response', xhr.response);
+    });
+  }
+  xhr.send();
+}
+
+function sendRequestCNBC(requestType, ticker){
+  if(ticker !== null) ticker = ticker.toUpperCase();
+  var xhr = new XMLHttpRequest;
+  var responseObject;
+  xhr.readyState = 'json';
+  if(requestType === trendingStoriesRequest){
+    xhr.open("GET", "https://cnbc.p.rapidapi.com/news/list-trending");
+    xhr.setRequestHeader("x-rapidapi-key", "afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e");
+    xhr.setRequestHeader("x-rapidapi-host", "cnbc.p.rapidapi.com");
+    xhr.addEventListener('load', function(){
+      responseObject = JSON.parse(xhr.response);
+    });
+  }else{
+    xhr.open("GET", `https://cnbc.p.rapidapi.com/news/list-by-symbol?tickersymbol=${ticker}&page=1&pagesize=10`);
+    xhr.setRequestHeader("x-rapidapi-key", "afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e");
+    xhr.setRequestHeader("x-rapidapi-host", "cnbc.p.rapidapi.com");
+    xhr.addEventListener('load', function(){
+      responseObject = JSON.parse(xhr.response);
     });
   }
   xhr.send();
@@ -67,3 +91,4 @@ function sendRequestAlphaVantage(functionType, ticker, keyword){
 $searchInput.addEventListener('input', autoCompleteSuggest);
 $suggestionBox.addEventListener('click', loadSuggestion);
 $searchIcon.addEventListener('click', submitSearch);
+window.addEventListener('load', sendRequestCNBC(trendingStoriesRequest, null));
