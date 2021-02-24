@@ -13,11 +13,18 @@ function autoCompleteSuggest(event){
       currentItems[i].remove();
     }
   }
+}
 
+function loadSuggestion(event){
+  console.log('event', event);
+  console.log('event.target', event.target);
+  console.log('event.target.tCont', event.target.textContent);
+  $searchInput.value = event.target.textContent;
 }
 
 // Event Listeners + Function Calls
 $searchInput.addEventListener('input', autoCompleteSuggest);
+$suggestionBox.addEventListener('click', loadSuggestion);
 
 // Request Functions
 function sendRequestAlphaVantage(type, ticker, keyword){
@@ -28,7 +35,6 @@ function sendRequestAlphaVantage(type, ticker, keyword){
     xhr.open("GET", `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keyword}&apikey=CPOI5XYGUXDVNA28`);
     xhr.addEventListener('load', function(){
       console.log('status', xhr.status);
-      console.log('response', xhr.response);
       for(var i = 0; i <xhr.response.bestMatches.length; i++){
         $suggestionBox.classList.add('active')
         var suggestionItem = document.createElement('li');
