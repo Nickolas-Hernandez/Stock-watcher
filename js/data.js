@@ -1,4 +1,5 @@
 /* exported data */
 var data = {
-  inputID: null,
+  suggestionData: null,
+  inputID: null
 }
