@@ -17,14 +17,6 @@
   flex-wrap: wrap;
 }
 
-.wrap {
-  flex-wrap: wrap;
-}
-
-.between {
-  justify-content: space-between;
-}
-
 @media only screen and (min-width: 768px) {
   .container {
     width: 720px;

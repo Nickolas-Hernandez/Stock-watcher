@@ -9,6 +9,8 @@ ul {
 }
 
 .search-bar {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   position: relative;
 }
@@ -24,12 +26,13 @@ input#search-input {
   outline: none;
   color: white;
 }
-.auto-list-container{
+
+.auto-list-container {
   width: 80%;
   position: relative;
 }
 
-.auto-list{
+.auto-list {
   padding: 0;
   margin: 0;
   position: absolute;
@@ -39,14 +42,14 @@ input#search-input {
   display: none;
 }
 
-.auto-list.active{
+.auto-list.active {
   display: block;
   background-color: #393e42;
   border-top: 1px solid #00010d;
 }
 
-.auto-suggest-item{
-  padding: .4rem;
+.auto-suggest-item {
+  padding: 0.4rem;
 }
 
 i {
@@ -100,4 +103,8 @@ i.fa-pen {
 .price-column {
   width: 25%;
   text-align: center;
+}
+
+.lists-sections {
+  justify-content: space-between;
 }
