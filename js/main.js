@@ -4,14 +4,9 @@ var $suggestionBox = document.querySelector('.auto-list');
 
 // Functions
 function autoCompleteSuggest(event){
+  removeSuggestionList();
   if(event.target.value.length >= 3) {
     sendRequestAlphaVantage('autocomplete', null, event.target.value);
-  }else{
-    $suggestionBox.classList.remove('active');
-    var currentItems = document.querySelectorAll('.auto-suggest-item');
-    for(var i = 0; i < currentItems.length; i++){
-      currentItems[i].remove();
-    }
   }
 }
 
@@ -20,6 +15,15 @@ function loadSuggestion(event){
   console.log('event.target', event.target);
   console.log('event.target.tCont', event.target.textContent);
   $searchInput.value = event.target.textContent;
+  removeSuggestionList();
+}
+
+function removeSuggestionList(){
+  $suggestionBox.classList.remove('active');
+  var currentItems = document.querySelectorAll('.auto-suggest-item');
+    for(var i = 0; i < currentItems.length; i++){
+      currentItems[i].remove();
+    }
 }
 
 // Event Listeners + Function Calls
