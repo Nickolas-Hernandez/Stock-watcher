@@ -10,6 +10,7 @@ ul {
 
 .search-bar {
   justify-content: space-between;
+  position: relative;
 }
 
 input#search-input {
@@ -22,6 +23,25 @@ input#search-input {
   border-radius: 30px;
   outline: none;
   color: white;
+}
+.auto-list-container{
+  width: 80%;
+  position: relative;
+}
+
+.auto-list{
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.auto-list.active{
+  padding: 5px;
+  background-color: #393e42;
+  border-top: 1px solid #00010d;
 }
 
 i {

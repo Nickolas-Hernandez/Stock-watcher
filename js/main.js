@@ -3,29 +3,25 @@ var $watchListPage = document.querySelector('.watchlist-page');
 var $searchInput = document.querySelector('#search-input');
 
 // Functions
-function autoCompleteSuggest(event){
-  console.log('event', event);
-  console.log('event', event.target.value);
-  sendRequestAlphaVantage('autocomplete', null, event.target.value);
-}
+
 // Event Listeners + Function Calls
-$searchInput.addEventListener('input', autoCompleteSuggest);
+$searchInput.addEventListener('input', sendRequestAlphaVantage('autocomplete', null, event));
 
 // Request Functions
-function sendRequestAlphaVantage(type, ticker, keyword){
+function sendRequestAlphaVantage(type, ticker, event){
   if(ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
+  xhr.responseType = 'json';
   if(type === 'autocomplete'){
-    xhr.open("GET", `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keyword}&apikey=CPOI5XYGUXDVNA28`);
+    xhr.open("GET", `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${event.target.value}&apikey=CPOI5XYGUXDVNA28`);
+    xhr.addEventListener('load', function(){
+      console.log('status', xhr.status);
+      console.log('response', xhr.response);
+    });
   }else if( type === 'daily'){
   xhr.open("GET", `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   }else {
     xhr.open("GET", `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   }
-  xhr.responseType = 'json';
-  xhr.addEventListener('load', function(){
-    console.log('status', xhr.status);
-    console.log('response', xhr.response);
-  });
-  xhr.send()
+  xhr.send();
 }
