@@ -36,12 +36,17 @@ input#search-input {
   width: 100%;
   z-index: 1;
   border-radius: 10px;
+  /* display: none; */
 }
 
 .auto-list.active{
-  padding: 5px;
+  display: block;
   background-color: #393e42;
   border-top: 1px solid #00010d;
+}
+
+.auto-suggest-item{
+  padding: .4rem;
 }
 
 i {
