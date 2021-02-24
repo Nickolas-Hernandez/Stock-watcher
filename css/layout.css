@@ -1,0 +1,28 @@
+.container {
+  width: 335px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+}
+
+.column-full {
+  width: 100%;
+}
+
+.column-half {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    width: 720px;
+  }
+
+  .column-half {
+    width: 49%;
+  }
+}

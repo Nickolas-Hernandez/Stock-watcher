@@ -1,0 +1,110 @@
+body {
+  font-family: "Montserrat", sans-serif;
+  background: #00010d;
+  color: white;
+}
+
+ul {
+  padding: 0 5px;
+}
+
+.search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  position: relative;
+}
+
+input#search-input {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #393e42;
+  border: none;
+  height: 2rem;
+  width: 80%;
+  padding: 0 1rem;
+  border-radius: 30px;
+  outline: none;
+  color: white;
+}
+
+.auto-list-container {
+  width: 80%;
+  position: relative;
+}
+
+.auto-list {
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  border-radius: 10px;
+  display: none;
+}
+
+.auto-list.active {
+  display: block;
+  background-color: #393e42;
+  border-top: 1px solid #00010d;
+}
+
+.auto-suggest-item {
+  padding: 0.4rem;
+}
+
+i {
+  color: #393e42;
+  cursor: pointer;
+}
+
+i.fa-search {
+  font-size: 2rem;
+}
+
+.watchlist-section,
+.top-news-section {
+  padding-top: 2rem;
+}
+
+.watchlist-text {
+  display: inline;
+  font-weight: 400;
+  margin-bottom: 0.2rem;
+  padding-left: 5px;
+}
+
+.watchlist-header {
+  justify-content: space-between;
+  align-items: center;
+}
+
+i.fa-pen {
+  padding-right: 5px;
+}
+
+.full-bar {
+  height: 3px;
+  background-color: #393e42;
+  border-radius: 5px;
+}
+
+.watchlist li {
+  padding: 5px 0;
+}
+
+.watchlist p {
+  font-weight: 300;
+}
+
+.watchlist-item-head {
+  justify-content: space-between;
+}
+
+.price-column {
+  width: 25%;
+  text-align: center;
+}
+
+.lists-sections {
+  justify-content: space-between;
+}

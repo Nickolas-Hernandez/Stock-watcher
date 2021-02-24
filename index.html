@@ -4,14 +4,50 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AJAX Project</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+    crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header>
-  </header>
   <main>
+    <div class="watchlist-page container" data-view="watchlist">
+      <section class="search-bar column-full">
+        <input type="text" name="search-field" id="search-input" placeholder="Search Ticker Symbols">
+        <i class="fas fa-search"></i>
+        <div class="auto-list-container">
+          <ul class="auto-list"></ul>
+        </div>
+      </section>
+      <div class="row lists-sections">
+        <section class="watchlist-section column-half">
+          <header class="watchlist-header row">
+            <h2 class="watchlist-text">My Watchlist</h2>
+            <i class="fas fa-pen"></i>
+            <span class="full-bar column-full"></span>
+          </header>
+          <ul class="watchlist column-full">
+            <li class="watchlist-item-head row column-full">
+              <p class="ticker">SYMBOL</p>
+              <div class="price-column">
+                <p class="price">&dollar;&dollar;&dollar;</p>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section class="top-news-section column-half">
+          <header class="watchlist-header row">
+            <h2 class="watchlist-text">Top News</h2>
+            <span class="full-bar column-full"></span>
+          </header>
+          <ul class="top-news-list"></ul>
+        </section>
+      </div>
+    </div>
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
