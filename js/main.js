@@ -52,6 +52,10 @@ function getTrendingStories(event) {
   sendRequestCNBC(trendingStoriesRequest, null, null);
 }
 
+function displayTrending(data){
+  console.log('hello');
+}
+
 // Request Functions
 
 function sendRequestAlphaVantage(ticker){
@@ -81,8 +85,9 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.open('GET', 'https://cnbc.p.rapidapi.com/news/list-trending');
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
-      responseObject = responseObject.data.mostPopular;
+      responseObject = responseObject.data.mostPopular.assets;
       console.log('CNBC trending', responseObject);
+      displayTrending(responseObject);
     });
   }else if(requestType === companyNewsRequest) {
     xhr.open('GET', `https://cnbc.p.rapidapi.com/news/list-by-symbol?tickersymbol=${ticker}&page=1&pagesize=10`);
