@@ -122,6 +122,9 @@ function switchPage(eventItem){
   if(eventItem === $searchIcon){
     $watchlistPage.classList.add('hidden');
     $stockPage.classList.remove('hidden');
+  }else if(eventItem.className === 'fas fa-times' ){
+    $watchlistPage.classList.remove('hidden');
+    $stockPage.classList.add('hidden');
   }
 }
 
@@ -175,4 +178,9 @@ function sendRequestCNBC(requestType, ticker, input) {
 $searchInput.addEventListener('input', autoCompleteSuggest);
 $suggestionBox.addEventListener('click', loadSuggestion);
 $searchIcon.addEventListener('click', submitSearch);
+$stockPage.addEventListener('click', function(){
+  if(event.target.className === 'fas fa-times'){
+    switchPage(event.target);
+  }
+});
 // window.addEventListener('load', getTrendingStories);
