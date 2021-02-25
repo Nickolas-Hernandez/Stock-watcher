@@ -28,15 +28,11 @@ function removeSuggestionList() {
 
 function loadSuggestion(event) {
   $searchInput.value = event.target.textContent;
-  for(var i = 0; i < data.suggestionData.length; i++){
-    if(data.suggestionData[i].symbolName === event.target.textContent){
-      data.inputID = data.suggestionData[i].issuerId + ',' + data.suggestionData[i].issueId;
-    }
-  }
   removeSuggestionList();
 }
 
 function submitSearch(event) {
+  data.currentStock = [];
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value);
   sendRequestCNBC(companyNewsRequest, $searchInput.value, null);

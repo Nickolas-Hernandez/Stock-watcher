@@ -1,5 +1,6 @@
 /* exported data */
 var data = {
-  dataView: null,
+  view: null,
+  suggestionData: null,
   currentStock: []
 }
