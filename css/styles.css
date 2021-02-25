@@ -116,10 +116,10 @@ i.fa-pen {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #393e42;
-  margin: .4rem 0;
+  margin: 0.4rem 0;
 }
 
-.headline-container{
+.headline-container {
   width: 75%;
 }
 
@@ -142,6 +142,22 @@ i.fa-pen {
   height: 100%;
 }
 
-.hidden{
+.overview-header {
+  align-items: center;
+}
+
+.fa-times {
+  font-size: 24px;
+  padding-right: 5px;
+}
+
+.fa-plus {
+  font-size: 18px;
+  margin-right: auto;
+  margin-left: 0.8rem;
+  color: #b6ecb4;
+}
+
+.hidden {
   display: none;
 }
