@@ -85,6 +85,7 @@ function loadStats(dataArray){
   var $ticker = document.querySelector('.stats-ticker');
   var $price = document.querySelector('.stats-price');
   var $companyName = document.querySelector('.company-name');
+  var $date = document.querySelector('.stats-date');
   var $open = document.querySelector('.open-price');
   var $close = document.querySelector('.close-price');
   var $high = document.querySelector('.high-price');
@@ -95,8 +96,20 @@ function loadStats(dataArray){
   var $yield = document.querySelector('.yield');
   for(var i = 0; i < dataArray.length; i++){
     if(dataArray[i]['Time Series (Daily)']){
-      $
+      $date.textContent =  dataArray[i]['Meta Data']['3. Last Refreshed'];
+      var price = dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close'];
+      price = cutPrice(price);
+      $price.textContent = '$' + price;
     }else console.log('poopie');
+  }
+}
+
+function cutPrice(string){
+  for(var i = 0; i < string.length; i++){
+    if (string[i] === '.'){
+      string = string.slice(0, (i + 3));
+      return string;
+    }
   }
 }
 
