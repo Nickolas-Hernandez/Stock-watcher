@@ -36,6 +36,7 @@ function loadSuggestion(event) {
 
 function submitSearch(event) {
   data.currentStock = [];
+  clearRelatedNews();
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value);
   sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
@@ -103,7 +104,7 @@ function loadStats(dataArray) {
   var $low52 = document.querySelector('.low-52wk');
   for (var i = 0; i < dataArray.length; i++) {
     if (dataArray[i]['Time Series (Daily)']) {
-      $date.textContent = dataArray[i]['Meta Data']['3. Last Refreshed'];
+      $date.textContent = dataArray[i]['Meta Data']['3. Last Refreshed'].slice(0, 10);
       $price.textContent = '$' + cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close']);
       $open.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['1. open']);
       $close.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close']);
@@ -134,6 +135,13 @@ function switchPage(eventItem) {
   } else if (eventItem.className === 'fas fa-times') {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
+  }
+}
+
+function clearRelatedNews() {
+  var $newList = document.querySelectorAll('.stock-news-list > li');
+  for (var i = 0; i < $newList.length; i++) {
+    $newList[i].remove();
   }
 }
 
