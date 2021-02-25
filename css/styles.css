@@ -113,21 +113,29 @@ i.fa-pen {
   width: 100%;
   height: 70px;
   flex-wrap: nowrap;
+  justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #393e42;
+  margin: .4rem 0;
+}
+
+.headline-container{
+  width: 75%;
 }
 
 .headline-container h3 {
   font-size: 14px;
   font-weight: 300;
-  flex-grow: 1;
 }
 
 .news-image-container {
-  width: 100px;
+  width: 70px;
   height: 50px;
   border-radius: 10px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .news-image-container img {

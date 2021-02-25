@@ -2,6 +2,7 @@
 var $searchInput = document.querySelector('#search-input');
 var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
+var $topNewList = document.querySelector('.top-news-list');
 var trendingStoriesRequest = 'TRENDING';
 var companyNewsRequest = 'SYMBOL_NEWS';
 var autoCompleteRequest = 'AUTO';
@@ -53,7 +54,24 @@ function getTrendingStories(event) {
 }
 
 function displayTrending(data){
-  console.log('hello');
+  console.log('data', data);
+  for(var i = 0; i < 5; i++){
+    var listItem = document.createElement('li');
+    var headlineContainer = document.createElement('div');
+    var imageContainer = document.createElement('div');
+    var headlineText = document.createElement('h3');
+    var headlineImage = document.createElement('img');
+    headlineText.textContent = data[i].headline.slice(0, 50) + " . . .";
+    headlineImage.setAttribute('src', data[i].promoImage.url);
+    listItem.className = 'top-news-item row';
+    headlineContainer.className = 'headline-container';
+    imageContainer.className = 'news-image-container';
+    headlineContainer.appendChild(headlineText);
+    imageContainer.appendChild(headlineImage);
+    listItem.appendChild(headlineContainer);
+    listItem.appendChild(imageContainer);
+    $topNewList.appendChild(listItem);
+  }
 }
 
 // Request Functions
