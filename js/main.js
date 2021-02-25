@@ -61,12 +61,16 @@ function displayTrending(data){
     var imageContainer = document.createElement('div');
     var headlineText = document.createElement('h3');
     var headlineImage = document.createElement('img');
+    var headlineAnchor = document.createElement('a');
     headlineText.textContent = data[i].headline.slice(0, 50) + " . . .";
     headlineImage.setAttribute('src', data[i].promoImage.url);
+    headlineAnchor.setAttribute('href', data[i].url);
+    headlineAnchor.setAttribute('target', '_blank');
     listItem.className = 'top-news-item row';
     headlineContainer.className = 'headline-container';
     imageContainer.className = 'news-image-container';
-    headlineContainer.appendChild(headlineText);
+    headlineAnchor.appendChild(headlineText);
+    headlineContainer.appendChild(headlineAnchor);
     imageContainer.appendChild(headlineImage);
     listItem.appendChild(headlineContainer);
     listItem.appendChild(imageContainer);
