@@ -53,7 +53,7 @@ function getTrendingStories(event) {
   sendRequestCNBC(trendingStoriesRequest, null, null);
 }
 
-function displayNews(data){
+function createNewsItems(data){
   for(var i = 0; i < 5; i++){
     var listItem = document.createElement('li');
     var headlineContainer = document.createElement('div');
@@ -77,6 +77,20 @@ function displayNews(data){
   }
 }
 
+function loadStats(data){
+  var $ticker = document.querySelector('.stats-ticker');
+  var $price = document.querySelector('.stats-price');
+  var $companyName = document.querySelector('.company-name');
+  var $open = document.querySelector('.open-price');
+  var $close = document.querySelector('.close-price');
+  var $high = document.querySelector('.high-price');
+  var $low = document.querySelector('.low-price');
+  var $high52 = document.querySelector('.high-52wk');
+  var $low52 = document.querySelector('.low-52wk');
+  var $vol = document.querySelector('.volume');
+  var $yield = document.querySelector('.yield');
+}
+
 // Request Functions
 function sendRequestAlphaVantage(ticker){
   var xhr = new XMLHttpRequest();
@@ -85,6 +99,7 @@ function sendRequestAlphaVantage(ticker){
   xhr.addEventListener('load', function(){
     console.log('status av', xhr.status);
     console.log('response av', xhr.response);
+    loadStats(xhr.response);
   });
   xhr.send()
 }
@@ -106,14 +121,14 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.data.mostPopular.assets;
-      displayNews(responseObject);
+      createNewsItems(responseObject);
     });
   }else if(requestType === companyNewsRequest) {
     xhr.open('GET', `https://cnbc.p.rapidapi.com/news/list-by-symbol?tickersymbol=${ticker}&page=1&pagesize=10`);
     xhr.addEventListener('load', function(){
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
-      console.log('response companyNews', responseObject);
+      // console.log('response companyNews', responseObject);
     });
   }
   xhr.setRequestHeader('x-rapidapi-key', 'afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e');
