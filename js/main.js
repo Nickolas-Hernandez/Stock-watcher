@@ -41,6 +41,7 @@ function submitSearch(event) {
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value);
   sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
+  removeSuggestionList();
 }
 
 function createAutoSuggestItem(response) {
@@ -102,8 +103,12 @@ function loadStats(dataArray){
       $close.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close']);
       $high.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['2. high']);
       $low.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['3. low']);
-
-    }else console.log('poopie');
+    }else {
+      $ticker.textContent = dataArray[i].Symbol;
+      $companyName.textContent = dataArray[i].Name;
+      $high52.textContent = cutPrice(dataArray[i]['52WeekHigh']);  
+      $low52.textContent = cutPrice(dataArray[i]['52WeekLow']);  
+    }
   }
 }
 
