@@ -2,7 +2,8 @@
 var $searchInput = document.querySelector('#search-input');
 var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
-var $topNewList = document.querySelector('.top-news-list');
+var $topNewsList = document.querySelector('.top-news-list');
+var $stockNewsList = document.querySelector('.stock-news-list');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
@@ -76,7 +77,7 @@ function createNewsItems(data){
     imageContainer.appendChild(headlineImage);
     listItem.appendChild(headlineContainer);
     listItem.appendChild(imageContainer);
-    $topNewList.appendChild(listItem);
+    $topNewsList.appendChild(listItem);
   }
 }
 
@@ -134,8 +135,6 @@ function sendRequestAlphaVantage(functionType, ticker){
   xhr.open("GET", `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function(){
-    console.log('status av', xhr.status);
-    console.log('response av', xhr.response);
     data.currentStock.push(xhr.response);
     loadStats(data.currentStock);
   });
@@ -166,7 +165,6 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function(){
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
-      // console.log('response companyNews', responseObject);
     });
   }
   xhr.setRequestHeader('x-rapidapi-key', 'afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e');
@@ -183,4 +181,4 @@ $stockPage.addEventListener('click', function(){
     switchPage(event.target);
   }
 });
-// window.addEventListener('load', getTrendingStories);
+window.addEventListener('load', getTrendingStories);
