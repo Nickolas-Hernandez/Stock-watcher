@@ -53,7 +53,7 @@ function getTrendingStories(event) {
   sendRequestCNBC(trendingStoriesRequest, null, null);
 }
 
-function displayTrending(data){
+function displayNews(data){
   for(var i = 0; i < 5; i++){
     var listItem = document.createElement('li');
     var headlineContainer = document.createElement('div');
@@ -106,7 +106,7 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.data.mostPopular.assets;
-      displayTrending(responseObject);
+      displayNews(responseObject);
     });
   }else if(requestType === companyNewsRequest) {
     xhr.open('GET', `https://cnbc.p.rapidapi.com/news/list-by-symbol?tickersymbol=${ticker}&page=1&pagesize=10`);
