@@ -141,3 +141,7 @@ i.fa-pen {
 .news-image-container img {
   height: 100%;
 }
+
+.hidden{
+  display: none;
+}

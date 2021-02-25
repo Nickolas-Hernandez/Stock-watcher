@@ -54,7 +54,6 @@ function getTrendingStories(event) {
 }
 
 function displayTrending(data){
-  console.log('data', data);
   for(var i = 0; i < 5; i++){
     var listItem = document.createElement('li');
     var headlineContainer = document.createElement('div');
@@ -79,7 +78,6 @@ function displayTrending(data){
 }
 
 // Request Functions
-
 function sendRequestAlphaVantage(ticker){
   var xhr = new XMLHttpRequest();
   xhr.open("GET", `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
@@ -108,7 +106,6 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.data.mostPopular.assets;
-      console.log('CNBC trending', responseObject);
       displayTrending(responseObject);
     });
   }else if(requestType === companyNewsRequest) {
@@ -128,4 +125,4 @@ function sendRequestCNBC(requestType, ticker, input) {
 $searchInput.addEventListener('input', autoCompleteSuggest);
 $suggestionBox.addEventListener('click', loadSuggestion);
 $searchIcon.addEventListener('click', submitSearch);
-window.addEventListener('load', getTrendingStories);
+// window.addEventListener('load', getTrendingStories);
