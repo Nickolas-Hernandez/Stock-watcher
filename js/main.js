@@ -80,7 +80,8 @@ function createNewsItems(data){
   }
 }
 
-function loadStats(data){
+function loadStats(dataArray){
+  if(dataArray.length !== 2) return;
   var $ticker = document.querySelector('.stats-ticker');
   var $price = document.querySelector('.stats-price');
   var $companyName = document.querySelector('.company-name');
@@ -92,7 +93,11 @@ function loadStats(data){
   var $low52 = document.querySelector('.low-52wk');
   var $vol = document.querySelector('.volume');
   var $yield = document.querySelector('.yield');
-  $ticker.textContent = data.Symbol;
+  for(var i = 0; i < dataArray.length; i++){
+    if(dataArray[i]['Time Series (Daily)']){
+      $
+    }else console.log('poopie');
+  }
 }
 
 // Request Functions
@@ -103,9 +108,8 @@ function sendRequestAlphaVantage(functionType, ticker){
   xhr.addEventListener('load', function(){
     console.log('status av', xhr.status);
     console.log('response av', xhr.response);
-    if(functionType === overviewStatsRequest){
-      data.currentStock.overview = xhr.response;
-    } else data.currentStock.daily = xhr.response;
+    data.currentStock.push(xhr.response);
+    loadStats(data.currentStock);
   });
   xhr.send()
 }
