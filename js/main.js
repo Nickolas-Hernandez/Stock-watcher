@@ -100,6 +100,9 @@ function loadStats(dataArray){
       $price.textContent = '$' + cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close']);
       $open.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['1. open']);
       $close.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close']);
+      $high.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['2. high']);
+      $low.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['3. low']);
+
     }else console.log('poopie');
   }
 }
