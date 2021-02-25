@@ -3,6 +3,8 @@ var $searchInput = document.querySelector('#search-input');
 var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
 var $topNewList = document.querySelector('.top-news-list');
+var $watchlistPage = document.querySelector('.watchlist-page');
+var $stockPage = document.querySelector('.stock-page');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
@@ -38,6 +40,7 @@ function submitSearch(event) {
   sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
+  switchPage(event.target);
 }
 
 function createAutoSuggestItem(response) {
@@ -89,8 +92,6 @@ function loadStats(dataArray){
   var $low = document.querySelector('.low-price');
   var $high52 = document.querySelector('.high-52wk');
   var $low52 = document.querySelector('.low-52wk');
-  var $vol = document.querySelector('.volume');
-  var $yield = document.querySelector('.yield');
   for(var i = 0; i < dataArray.length; i++){
     if(dataArray[i]['Time Series (Daily)']){
       $date.textContent =  dataArray[i]['Meta Data']['3. Last Refreshed'];
@@ -114,6 +115,13 @@ function cutPrice(string){
       string = string.slice(0, (i + 3));
       return string;
     }
+  }
+}
+
+function switchPage(eventItem){
+  if(eventItem === $searchIcon){
+    $watchlistPage.classList.add('hidden');
+    $stockPage.classList.remove('hidden');
   }
 }
 
