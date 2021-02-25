@@ -97,9 +97,9 @@ function loadStats(dataArray){
   for(var i = 0; i < dataArray.length; i++){
     if(dataArray[i]['Time Series (Daily)']){
       $date.textContent =  dataArray[i]['Meta Data']['3. Last Refreshed'];
-      var price = dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close'];
-      price = cutPrice(price);
-      $price.textContent = '$' + price;
+      $price.textContent = '$' + cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close']);
+      $open.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['1. open']);
+      $close.textContent = cutPrice(dataArray[i]['Time Series (Daily)'][$date.textContent]['4. close']);
     }else console.log('poopie');
   }
 }
