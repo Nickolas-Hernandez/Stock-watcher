@@ -158,6 +158,20 @@ i.fa-pen {
   color: #b6ecb4;
 }
 
+.stock-stats-section {
+  padding-top: 1.2rem;
+}
+
+.stock-stats-container {
+  width: 100%;
+  height: 280px;
+  border-radius: 25px;
+}
+
+.positive-background {
+  background-color: #b6ecb4;
+}
+
 .hidden {
   display: none;
 }
