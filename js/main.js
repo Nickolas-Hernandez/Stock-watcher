@@ -11,6 +11,7 @@ var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
 var companyNewsRequest = 'SYMBOL_NEWS';
 var autoCompleteRequest = 'AUTO';
+var issueIdRequest = 'ISSUE_ID';
 
 // Functions
 function autoCompleteSuggest(event) {
@@ -39,7 +40,7 @@ function submitSearch(event) {
   clearRelatedNews();
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value);
-  sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
+  // sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
   switchPage(event.target);
@@ -145,6 +146,14 @@ function clearRelatedNews() {
   }
 }
 
+function saveToWatchlist(symbol, id){
+  var watchlistObject = {}
+  watchlistObject.ticker = symbol;
+  watchlistObject.issueId = id;
+  data.wachlist.push(watchlistObject);
+  //create list item with current data, future log-on will create items from local storage
+}
+
 // Request Functions
 function sendRequestAlphaVantage(functionType, ticker) {
   var xhr = new XMLHttpRequest();
@@ -182,7 +191,14 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
       createNewsItems(responseObject);
-
+    });
+  }else if(requestType === issueIdRequest){
+    xhr.open("GET", `https://cnbc.p.rapidapi.com/symbols/translate?symbol=${ticker}`);
+    xhr.addEventListener('load', function(){
+      console.log('status', xhr.status);
+      responseObject = JSON.parse(xhr.response);
+      responseObject = responseObject.issueId;
+      saveToWatchlist(ticker, xhr.response);
     });
   }
   xhr.setRequestHeader('x-rapidapi-key', 'afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e');
@@ -199,7 +215,7 @@ $stockPage.addEventListener('click', function () {
     switchPage(event.target);
   }else if(event.target.className === 'fas fa-plus'){
     switchPage(event.target);
-    saveToWatchlist(data.currentStock);
+    sendRequestCNBC(issueIdRequest, dataCurrentStock[0].Symbol, null);
   }
 });
 // window.addEventListener('load', getTrendingStories);

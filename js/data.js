@@ -2,5 +2,12 @@
 var data = {
   view: null,
   suggestionData: null,
-  currentStock: []
+  currentStock: [],
+  currentIssueId: null,
+  wachlist: [
+    {
+      ticker: 'APPL',
+      issueId: '36276'
+    }
+  ]
 }
