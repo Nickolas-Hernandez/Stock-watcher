@@ -4,10 +4,5 @@ var data = {
   suggestionData: null,
   currentStock: [],
   currentIssueId: null,
-  wachlist: [
-    {
-      ticker: 'APPL',
-      issueId: '36276'
-    }
-  ]
+  wachlist: [  ]
 }

@@ -4,6 +4,7 @@ var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
 var $topNewsList = document.querySelector('.top-news-list');
 var $stockNewsList = document.querySelector('.stock-news-list');
+var $watchlistList = document.querySelector('.watchlist')
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
@@ -12,6 +13,7 @@ var trendingStoriesRequest = 'TRENDING';
 var companyNewsRequest = 'SYMBOL_NEWS';
 var autoCompleteRequest = 'AUTO';
 var issueIdRequest = 'ISSUE_ID';
+var forWatchlist = true;
 
 // Functions
 function autoCompleteSuggest(event) {
@@ -38,8 +40,8 @@ function loadSuggestion(event) {
 function submitSearch(event) {
   data.currentStock = [];
   clearRelatedNews();
-  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value);
-  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value);
+  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
+  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
   sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
@@ -149,29 +151,41 @@ function clearRelatedNews() {
 function saveStockToLocalStorage(){
   var $ticker = document.querySelector('.stats-ticker');
   data.wachlist.push($ticker.textContent);
-  generateWatchlistItem();
+  sendRequestAlphaVantage(dailyStatsRequest, $ticker.textContent, forWatchlist);
 }
 
-function generateWatchlistItem(){
-  // Get symbol and last close price from overview page and create
-  var $listItem = document.createElement('li');
-  var $ticker = document.createElement('p');
-  var $column = document.createElement('div');
-  var $price = document.createElement('p');
-  $listItem.classList = 'watchlist-item-head row column-full';
-  $ticker.classList = 'ticker';
-  $column.classList = 'price-column';
-  $column.classList = 'price';
+function generateWatchlistItem(dataObject){
+  var lastTradingDate = dataObject['Meta Data']['3. Last Refreshed'];
+  var listItem = document.createElement('li');
+  var ticker = document.createElement('p');
+  var column = document.createElement('div');
+  var price = document.createElement('p');
+  listItem.classList = 'watchlist-item-head row column-full';
+  ticker.classList = 'ticker';
+  column.classList = 'price-column';
+  column.classList = 'price';
+  ticker.textContent = dataObject['Meta Data']['2. Symbol'];
+  price.textContent = cutPrice(dataObject['Time Series (Daily)'][lastTradingDate]['4. close']);
+  column.appendChild(price);
+  listItem.appendChild(ticker);
+  listItem.appendChild(column);
+  $watchlistList.appendChild(listItem);
+
 }
 
 // Request Functions
-function sendRequestAlphaVantage(functionType, ticker) {
+function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    data.currentStock.push(xhr.response);
-    loadStats(data.currentStock);
+    if(isWatchlist === true){
+      console.log(xhr.response);
+      generateWatchlistItem(xhr.response);
+    }else {
+      data.currentStock.push(xhr.response);
+      loadStats(data.currentStock);
+    }
   });
   xhr.send();
 }
@@ -201,14 +215,6 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
       createNewsItems(responseObject);
-    });
-  }else if(requestType === issueIdRequest){
-    xhr.open("GET", `https://cnbc.p.rapidapi.com/symbols/translate?symbol=${ticker}`);
-    xhr.addEventListener('load', function(){
-      console.log('status', xhr.status);
-      responseObject = JSON.parse(xhr.response);
-      responseObject = responseObject.issueId;
-      saveToWatchlist(ticker, xhr.response);
     });
   }
   xhr.setRequestHeader('x-rapidapi-key', 'afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e');
