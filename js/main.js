@@ -132,7 +132,7 @@ function switchPage(eventItem) {
   if (eventItem === $searchIcon) {
     $watchlistPage.classList.add('hidden');
     $stockPage.classList.remove('hidden');
-  } else if (eventItem.className === 'fas fa-times') {
+  } else if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
   }
@@ -197,6 +197,9 @@ $searchIcon.addEventListener('click', submitSearch);
 $stockPage.addEventListener('click', function () {
   if (event.target.className === 'fas fa-times') {
     switchPage(event.target);
+  }else if(event.target.className === 'fas fa-plus'){
+    switchPage(event.target);
+    saveToWatchlist(data.currentStock);
   }
 });
-window.addEventListener('load', getTrendingStories);
+// window.addEventListener('load', getTrendingStories);
