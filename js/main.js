@@ -42,7 +42,7 @@ function submitSearch(event) {
   clearRelatedNews();
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
-  sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
+  // sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
   switchPage(event.target);
@@ -148,29 +148,40 @@ function clearRelatedNews() {
   }
 }
 
-function saveStockToLocalStorage(){
+function saveStockToLocalStorage(ticker){
   var $ticker = document.querySelector('.stats-ticker');
   data.wachlist.push($ticker.textContent);
   sendRequestAlphaVantage(dailyStatsRequest, $ticker.textContent, forWatchlist);
 }
 
 function generateWatchlistItem(dataObject){
-  var lastTradingDate = dataObject['Meta Data']['3. Last Refreshed'];
+  var lastTradingDate = dataObject['Meta Data']['3. Last Refreshed'].slice(0, 10);
   var listItem = document.createElement('li');
   var ticker = document.createElement('p');
   var column = document.createElement('div');
   var price = document.createElement('p');
-  listItem.classList = 'watchlist-item-head row column-full';
-  ticker.classList = 'ticker';
-  column.classList = 'price-column';
-  column.classList = 'price';
+  listItem.className = 'watchlist-item-head row column-full';
+  ticker.className = 'ticker';
+  column.className = 'price-column';
+  price.className = 'price';
+  price.classList.add(getPosOrNegClass(dataObject));
   ticker.textContent = dataObject['Meta Data']['2. Symbol'];
-  price.textContent = cutPrice(dataObject['Time Series (Daily)'][lastTradingDate]['4. close']);
+  price.textContent = '$' + cutPrice(dataObject['Time Series (Daily)'][lastTradingDate]['4. close']);
   column.appendChild(price);
   listItem.appendChild(ticker);
   listItem.appendChild(column);
   $watchlistList.appendChild(listItem);
+}
 
+function getPosOrNegClass(dataObject){
+  var date = dataObject['Meta Data']['3. Last Refreshed'].slice(0,10);
+  var open = cutPrice(dataObject['Time Series (Daily)'][date]['1. open']);
+  var close = cutPrice(dataObject['Time Series (Daily)'][date]['4. close']);
+  open = parseInt(open);
+  close = parseInt(close);
+  if(close >= open){
+    return 'profit-text';
+  }else return 'loss-text'
 }
 
 // Request Functions
