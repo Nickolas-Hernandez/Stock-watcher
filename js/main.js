@@ -148,9 +148,9 @@ function clearRelatedNews() {
   }
 }
 
-function saveStockToLocalStorage(ticker){
+function saveStockToLocalStorage(){
   var $ticker = document.querySelector('.stats-ticker');
-  data.wachlist.push($ticker.textContent);
+  data.watchlist.push($ticker.textContent);
   sendRequestAlphaVantage(dailyStatsRequest, $ticker.textContent, forWatchlist);
 }
 
