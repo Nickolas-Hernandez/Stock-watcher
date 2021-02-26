@@ -15,7 +15,7 @@
 </head>
 <body>
   <main>
-    <div class="watchlist-page container" data-view="watchlist">
+    <div class="watchlist-page container " data-view="watchlist">
       <section class="search-bar column-full">
         <input type="text" name="search-field" id="search-input" placeholder="Search Ticker Symbols">
         <i class="fas fa-search"></i>
@@ -41,12 +41,66 @@
         </section>
         <section class="top-news-section column-half">
           <header class="watchlist-header row">
-            <h2 class="watchlist-text">Top News</h2>
+            <h2 class="watchlist-text">Trending News</h2>
             <span class="full-bar column-full"></span>
           </header>
           <ul class="top-news-list"></ul>
         </section>
       </div>
+    </div>
+    <div class="stock-page container row hidden" data-view="stockPage">
+      <header class="overview-header search-bar column-full row">
+        <h2 class="watchlist-text">Overview</h2>
+        <i class="fas fa-plus"></i>
+        <i class="fas fa-times"></i>
+        <span class="full-bar column-full"></span>
+      </header>
+      <section class="stock-stats-section column-half">
+        <div class="stock-stats-container positive-background">
+          <header class="stats-header row">
+            <h2 class="stats-ticker"></h2>
+            <h2 class="stats-price"></h2>
+            <h4 class="company-name column-full"></h4>
+          </header>
+          <section class="stats-table-container">
+            <div class="table-header row column-full">
+              <h3>Stats</h3>
+              <h3 class="stats-date"></h3>
+              <span class="full-bar column-full"></span>
+            </div>
+            <table class="stats-table column-full">
+              <tbody>
+                <tr>
+                  <td>Open</td>
+                  <td class="open-price"></td>
+                  <td>Close</td>
+                  <td class="close-price"></td>
+                </tr>
+                <tr>
+                  <td>High</td>
+                  <td class="high-price"></td>
+                  <td>Low</td>
+                  <td class="low-price"></td>
+                </tr>
+                <tr>
+                  <td>52Wk Hi</td>
+                  <td class="high-52wk"></td>
+                  <td>52Wk Lo</td>
+                  <td class="low-52wk"></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+        </div>
+      </section>
+      <section class="top-news-section column-half">
+        <header class="watchlist-header row">
+          <h2 class="watchlist-text">Related News</h2>
+          <span class="full-bar column-full"></span>
+        </header>
+        <ul class="stock-news-list"></ul>
+      </section>
     </div>
   </main>
   <script src="js/data.js"></script>

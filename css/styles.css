@@ -96,7 +96,11 @@ i.fa-pen {
   font-weight: 300;
 }
 
-.watchlist-item-head {
+.watchlist-item-head,
+.lists-sections,
+.stats-header,
+.table-header,
+.stock-page {
   justify-content: space-between;
 }
 
@@ -105,6 +109,112 @@ i.fa-pen {
   text-align: center;
 }
 
-.lists-sections {
+.top-news-item {
+  width: 100%;
+  height: 70px;
+  flex-wrap: nowrap;
   justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #393e42;
+  margin: 0.4rem 0;
+}
+
+.headline-container {
+  width: 75%;
+}
+
+.headline-container h3 {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.news-image-container {
+  width: 70px;
+  height: 50px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.news-image-container img {
+  height: 100%;
+}
+
+.overview-header {
+  align-items: center;
+}
+
+.fa-times {
+  font-size: 24px;
+  padding-right: 5px;
+}
+
+.fa-plus {
+  font-size: 18px;
+  margin-right: auto;
+  margin-left: 0.8rem;
+  color: #b6ecb4;
+}
+
+.stock-stats-section {
+  padding-top: 1.2rem;
+}
+
+.stock-stats-container {
+  width: 100%;
+  height: 220px;
+  border-radius: 25px;
+  padding: 1rem;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stats-ticker,
+.stats-price,
+.company-name {
+  font-weight: 500;
+}
+
+.company-name {
+  font-weight: 400;
+  font-size: 14px;
+  padding-left: 0.2rem;
+}
+
+.stock-stats-container h3 {
+  font-weight: 400;
+}
+
+.table-header {
+  margin-bottom: 0.6rem;
+}
+
+.stats-table {
+  border-spacing: 2px 4px;
+}
+
+.positive-background {
+  background-color: #b6ecb4;
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    width: 760px;
+  }
+
+  .column-half {
+    width: 49%;
+  }
+
+  .stock-stats-section {
+    padding-top: 2rem;
+  }
+}
+
+.hidden {
+  display: none;
 }
