@@ -146,12 +146,17 @@ function clearRelatedNews() {
   }
 }
 
-function saveToWatchlist(symbol, id){
-  var watchlistObject = {}
-  watchlistObject.ticker = symbol;
-  watchlistObject.issueId = id;
-  data.wachlist.push(watchlistObject);
-  //create list item with current data, future log-on will create items from local storage
+
+function createWatchlistItem(){
+  // Get symbol and last close price from overview page and create
+  var $listItem = document.createElement('li');
+  var $ticker = document.createElement('p');
+  var $column = document.createElement('div');
+  var $price = document.createElement('p');
+  $listItem.classList = 'watchlist-item-head row column-full';
+  $ticker.classList = 'ticker';
+  $column.classList = 'price-column';
+  $column.classList = 'price';
 }
 
 // Request Functions
@@ -215,7 +220,7 @@ $stockPage.addEventListener('click', function () {
     switchPage(event.target);
   }else if(event.target.className === 'fas fa-plus'){
     switchPage(event.target);
-    sendRequestCNBC(issueIdRequest, dataCurrentStock[0].Symbol, null);
+    createNewWatchlistItem();
   }
 });
 // window.addEventListener('load', getTrendingStories);
