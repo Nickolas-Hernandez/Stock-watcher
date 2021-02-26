@@ -146,8 +146,13 @@ function clearRelatedNews() {
   }
 }
 
+function saveStockToLocalStorage(){
+  var $ticker = document.querySelector('.stats-ticker');
+  data.wachlist.push($ticker.textContent);
+  generateWatchlistItem();
+}
 
-function createWatchlistItem(){
+function generateWatchlistItem(){
   // Get symbol and last close price from overview page and create
   var $listItem = document.createElement('li');
   var $ticker = document.createElement('p');
@@ -220,7 +225,7 @@ $stockPage.addEventListener('click', function () {
     switchPage(event.target);
   }else if(event.target.className === 'fas fa-plus'){
     switchPage(event.target);
-    createNewWatchlistItem();
+    saveStockToLocalStorage();
   }
 });
 // window.addEventListener('load', getTrendingStories);
