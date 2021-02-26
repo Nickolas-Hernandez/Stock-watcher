@@ -40,7 +40,7 @@ function submitSearch(event) {
   clearRelatedNews();
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value);
-  // sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
+  sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
   switchPage(event.target);
