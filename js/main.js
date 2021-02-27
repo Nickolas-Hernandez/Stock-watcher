@@ -4,7 +4,7 @@ var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
 var $topNewsList = document.querySelector('.top-news-list');
 var $stockNewsList = document.querySelector('.stock-news-list');
-var $watchlistList = document.querySelector('.watchlist')
+var $watchlistList = document.querySelector('.watchlist');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
@@ -12,8 +12,6 @@ var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
 var companyNewsRequest = 'SYMBOL_NEWS';
 var autoCompleteRequest = 'AUTO';
-var issueIdRequest = 'ISSUE_ID';
-var forWatchlist = true;
 
 // Functions
 function autoCompleteSuggest(event) {
@@ -42,7 +40,7 @@ function submitSearch(event) {
   clearRelatedNews();
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
-  // sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
+  sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
   switchPage(event.target);
@@ -148,13 +146,13 @@ function clearRelatedNews() {
   }
 }
 
-function saveStockToLocalStorage(){
+function saveStockToLocalStorage() {
   var $ticker = document.querySelector('.stats-ticker');
   data.watchlist.push($ticker.textContent);
-  sendRequestAlphaVantage(dailyStatsRequest, $ticker.textContent, forWatchlist);
+  sendRequestAlphaVantage(dailyStatsRequest, $ticker.textContent, true);
 }
 
-function generateWatchlistItem(dataObject){
+function generateWatchlistItem(dataObject) {
   var lastTradingDate = dataObject['Meta Data']['3. Last Refreshed'].slice(0, 10);
   var listItem = document.createElement('li');
   var ticker = document.createElement('p');
@@ -173,15 +171,21 @@ function generateWatchlistItem(dataObject){
   $watchlistList.appendChild(listItem);
 }
 
-function getPosOrNegClass(dataObject){
-  var date = dataObject['Meta Data']['3. Last Refreshed'].slice(0,10);
+function getPosOrNegClass(dataObject) {
+  var date = dataObject['Meta Data']['3. Last Refreshed'].slice(0, 10);
   var open = cutPrice(dataObject['Time Series (Daily)'][date]['1. open']);
   var close = cutPrice(dataObject['Time Series (Daily)'][date]['4. close']);
   open = parseInt(open);
   close = parseInt(close);
-  if(close >= open){
+  if (close >= open) {
     return 'profit-text';
-  }else return 'loss-text'
+  } else return 'loss-text';
+}
+
+function getWatchlistFromLocalStorage() {
+  for (var i = 0; i < data.watchlist.length; i++) {
+    sendRequestAlphaVantage(dailyStatsRequest, data.watchlist[i], true);
+  }
 }
 
 // Request Functions
@@ -190,10 +194,9 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    if(isWatchlist === true){
-      console.log(xhr.response);
+    if (isWatchlist === true) {
       generateWatchlistItem(xhr.response);
-    }else {
+    } else {
       data.currentStock.push(xhr.response);
       loadStats(data.currentStock);
     }
@@ -240,9 +243,12 @@ $searchIcon.addEventListener('click', submitSearch);
 $stockPage.addEventListener('click', function () {
   if (event.target.className === 'fas fa-times') {
     switchPage(event.target);
-  }else if(event.target.className === 'fas fa-plus'){
+  } else if (event.target.className === 'fas fa-plus') {
     switchPage(event.target);
     saveStockToLocalStorage();
   }
 });
-// window.addEventListener('load', getTrendingStories);
+window.addEventListener('load', function () {
+  getTrendingStories();
+  getWatchlistFromLocalStorage();
+});
