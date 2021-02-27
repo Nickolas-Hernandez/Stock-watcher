@@ -182,7 +182,7 @@ function getPosOrNegClass(dataObject) {
   } else return 'loss-text';
 }
 
-function getWatchlistFromLocalStorage() {
+function getWatchlistFromDataModel() {
   for (var i = 0; i < data.watchlist.length; i++) {
     sendRequestAlphaVantage(dailyStatsRequest, data.watchlist[i], true);
   }
@@ -250,5 +250,5 @@ $stockPage.addEventListener('click', function () {
 });
 window.addEventListener('load', function () {
   getTrendingStories();
-  getWatchlistFromLocalStorage();
+  getWatchlistFromDataModel();
 });
