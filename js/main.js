@@ -248,6 +248,9 @@ $stockPage.addEventListener('click', function () {
     saveStockToLocalStorage();
   }
 });
+$watchlistList.addEventListener('click', function () {
+
+});
 window.addEventListener('load', function () {
   getTrendingStories();
   getWatchlistFromDataModel();
