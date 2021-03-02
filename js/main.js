@@ -7,6 +7,7 @@ var $stockNewsList = document.querySelector('.stock-news-list');
 var $watchlistList = document.querySelector('.watchlist');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
+var $plusIcon = document.querySelector('.fa-plus');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
@@ -130,13 +131,16 @@ function cutPrice(string) {
 }
 
 function switchPage(eventItem) {
- if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
+  if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
   }else{
     $watchlistPage.classList.add('hidden');
     $stockPage.classList.remove('hidden');
   }
+  if(data.plusIcon === 'hide'){
+    $plusIcon.classList.add('hidden');
+  }else $plusIcon.className = 'fas fa-plus';
 }
 
 function clearRelatedNews() {
@@ -244,7 +248,9 @@ $suggestionBox.addEventListener('click', loadSuggestion);
 $searchIcon.addEventListener('click', submitSearch);
 $stockPage.addEventListener('click', function () {
   if (event.target.className === 'fas fa-times') {
+    data.plusIcon = 'show';
     switchPage(event.target);
+
   } else if (event.target.className === 'fas fa-plus') {
     switchPage(event.target);
     saveStockToLocalStorage();
@@ -257,10 +263,11 @@ $watchlistList.addEventListener('click', function () {
     var ticker = tickerElement.textContent;
     sendRequestAlphaVantage(overviewStatsRequest, ticker, false);
     sendRequestAlphaVantage(dailyStatsRequest, ticker, false);
+    data.plusIcon = 'hide';
     switchPage(event.target);
   }
 });
 window.addEventListener('load', function () {
-  // getTrendingStories();
+  getTrendingStories();
   getWatchlistFromDataModel();
 });
