@@ -41,7 +41,7 @@ function submitSearch(event) {
   clearRelatedNews();
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
-  // sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
+  sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
   switchPage(event.target);
@@ -195,20 +195,20 @@ function getWatchlistFromDataModel() {
   }
 }
 
-function handleDeleteButtons(event){
+function handleDeleteButtons(event) {
   data.deleteButton = 'show';
   var $priceColumns = $watchlistList.querySelectorAll('.price-column');
-  for(var i = 0; i < $priceColumns.length; i++){
+  for (var i = 0; i < $priceColumns.length; i++) {
     $priceColumns[i].firstChild.classList.toggle('hidden');
     $priceColumns[i].lastChild.classList.toggle('hidden');
   }
 }
 
-function deleteWatchlistItem(event){
+function deleteWatchlistItem(event) {
   var listItem = event.target.closest('.watchlist-item');
   listItem.remove();
-  for(var i = 0; i < data.watchlist.length; i++){
-    if(data.watchlist[i] === listItem.firstChild.textContent){
+  for (var i = 0; i < data.watchlist.length; i++) {
+    if (data.watchlist[i] === listItem.firstChild.textContent) {
       data.watchlist.splice(i, 1);
     }
   }
@@ -283,19 +283,19 @@ $watchlistList.addEventListener('click', function () {
     var ticker = tickerElement.textContent;
     sendRequestAlphaVantage(overviewStatsRequest, ticker, false);
     sendRequestAlphaVantage(dailyStatsRequest, ticker, false);
-    // sendRequestCNBC(companyNewsRequest, ticker, null);
+    sendRequestCNBC(companyNewsRequest, ticker, null);
     data.plusIcon = 'hide';
     switchPage(event.target);
   }
 });
-$watchlistPage.addEventListener('click', function(){
-  if(event.target.className === 'fas fa-pen') {
+$watchlistPage.addEventListener('click', function () {
+  if (event.target.className === 'fas fa-pen') {
     handleDeleteButtons();
-  }else if( event.target.classList.contains('fa-minus-circle')){
+  } else if (event.target.classList.contains('fa-minus-circle')) {
     deleteWatchlistItem(event);
   }
 });
 window.addEventListener('load', function () {
-  // getTrendingStories();
+  getTrendingStories();
   getWatchlistFromDataModel();
 });
