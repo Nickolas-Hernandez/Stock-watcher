@@ -158,7 +158,7 @@ function generateWatchlistItem(dataObject) {
   var ticker = document.createElement('p');
   var column = document.createElement('div');
   var price = document.createElement('p');
-  listItem.className = 'watchlist-item-head row column-full';
+  listItem.className = 'watchlist-item row column-full';
   ticker.className = 'ticker';
   column.className = 'price-column';
   price.className = 'price';
