@@ -281,6 +281,8 @@ $watchlistList.addEventListener('click', function () {
 $watchlistPage.addEventListener('click', function(){
   if(event.target.className === 'fas fa-pen') {
     showDeleteButtons();
+  }else if( event.target.classList.contains('fas fa-minus-circle')){
+    deleteWatchlistItem();
   }
 });
 window.addEventListener('load', function () {
