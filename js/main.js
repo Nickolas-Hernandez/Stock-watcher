@@ -200,6 +200,7 @@ function showDeleteButtons(event){
   console.log($priceColumns);
   for(var i = 0; i < $priceColumns.length; i++){
     $priceColumns[i].firstChild.classList.add('hidden');
+    $priceColumns[i].lastChild.classList.remove('hidden');
   }
 }
 
