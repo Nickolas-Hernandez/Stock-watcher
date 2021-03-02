@@ -193,7 +193,8 @@ function getWatchlistFromDataModel() {
 }
 
 function showDeleteButtons(event){
-
+  var $priceColumns = $watchlistList.querySelectorAll('.price-column');
+  console.log($priceColumns);
 }
 
 // Request Functions

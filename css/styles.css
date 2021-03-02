@@ -112,7 +112,8 @@ i.fa-pen {
   cursor: pointer;
 }
 
-.price-column {
+.price-column,
+.price-column-head {
   width: 25%;
   text-align: center;
 }
