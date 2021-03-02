@@ -205,7 +205,8 @@ function showDeleteButtons(event){
 }
 
 function deleteWatchlistItem(event){
-
+  var listItem = event.target.closest('.watchlist-item');
+  listItem.remove();
 }
 
 // Request Functions
@@ -285,8 +286,8 @@ $watchlistList.addEventListener('click', function () {
 $watchlistPage.addEventListener('click', function(){
   if(event.target.className === 'fas fa-pen') {
     showDeleteButtons();
-  }else if( event.target.classList.contains('fas fa-minus-circle')){
-    deleteWatchlistItem();
+  }else if( event.target.classList.contains('fa-minus-circle')){
+    deleteWatchlistItem(event);
   }
 });
 window.addEventListener('load', function () {
