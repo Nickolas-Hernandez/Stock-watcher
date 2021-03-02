@@ -1,9 +1,9 @@
 /* exported data */
 var data = {
-  view: null,
   suggestionData: null,
   currentStock: [],
-  watchlist: []
+  watchlist: [],
+  plusIcon: 'show'
 }
 var previousDataJSON = localStorage.getItem('watchlistData');
 

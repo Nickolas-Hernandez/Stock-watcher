@@ -7,6 +7,7 @@ var $stockNewsList = document.querySelector('.stock-news-list');
 var $watchlistList = document.querySelector('.watchlist');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
+var $plusIcon = document.querySelector('.fa-plus');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
@@ -130,13 +131,16 @@ function cutPrice(string) {
 }
 
 function switchPage(eventItem) {
-  if (eventItem === $searchIcon) {
-    $watchlistPage.classList.add('hidden');
-    $stockPage.classList.remove('hidden');
-  } else if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
+  if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
+  } else {
+    $watchlistPage.classList.add('hidden');
+    $stockPage.classList.remove('hidden');
   }
+  if (data.plusIcon === 'hide') {
+    $plusIcon.classList.add('hidden');
+  } else $plusIcon.className = 'fas fa-plus';
 }
 
 function clearRelatedNews() {
@@ -158,7 +162,7 @@ function generateWatchlistItem(dataObject) {
   var ticker = document.createElement('p');
   var column = document.createElement('div');
   var price = document.createElement('p');
-  listItem.className = 'watchlist-item-head row column-full';
+  listItem.className = 'watchlist-item row column-full';
   ticker.className = 'ticker';
   column.className = 'price-column';
   price.className = 'price';
@@ -242,10 +246,24 @@ $suggestionBox.addEventListener('click', loadSuggestion);
 $searchIcon.addEventListener('click', submitSearch);
 $stockPage.addEventListener('click', function () {
   if (event.target.className === 'fas fa-times') {
+    data.plusIcon = 'show';
     switchPage(event.target);
+
   } else if (event.target.className === 'fas fa-plus') {
     switchPage(event.target);
     saveStockToLocalStorage();
+  }
+});
+$watchlistList.addEventListener('click', function () {
+  if (event.target.closest('.watchlist-item')) {
+    var item = event.target.closest('.watchlist-item');
+    var tickerElement = item.querySelector('.ticker');
+    var ticker = tickerElement.textContent;
+    sendRequestAlphaVantage(overviewStatsRequest, ticker, false);
+    sendRequestAlphaVantage(dailyStatsRequest, ticker, false);
+    sendRequestCNBC(companyNewsRequest, ticker, null);
+    data.plusIcon = 'hide';
+    switchPage(event.target);
   }
 });
 window.addEventListener('load', function () {

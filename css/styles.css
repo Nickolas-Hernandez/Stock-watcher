@@ -97,11 +97,18 @@ i.fa-pen {
 }
 
 .watchlist-item-head,
+.watchlist-item,
 .lists-sections,
 .stats-header,
 .table-header,
 .stock-page {
   justify-content: space-between;
+}
+
+.watchlist-item {
+  border-bottom: 1px solid #393e42;
+  margin: 0.2rem 0;
+  padding-left: 10px;
 }
 
 .price-column {
@@ -201,11 +208,11 @@ i.fa-pen {
   background-color: #b6ecb4;
 }
 
-.profit-text{
+.profit-text {
   color: green;
 }
 
-.loss-text{
+.loss-text {
   color: red;
 }
 
