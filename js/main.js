@@ -207,6 +207,11 @@ function showDeleteButtons(event){
 function deleteWatchlistItem(event){
   var listItem = event.target.closest('.watchlist-item');
   listItem.remove();
+  for(var i = 0; i < data.watchlist.length; i++){
+    if(data.watchlist[i] === listItem.firstChild.textContent){
+      data.watchlist.splice(i, 1);
+    }
+  }
 }
 
 // Request Functions
