@@ -192,6 +192,10 @@ function getWatchlistFromDataModel() {
   }
 }
 
+function showDeleteButtons(event){
+
+}
+
 // Request Functions
 function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   var xhr = new XMLHttpRequest();
@@ -268,7 +272,7 @@ $watchlistList.addEventListener('click', function () {
 });
 $watchlistPage.addEventListener('click', function(){
   if(event.target.className === 'fas fa-pen') {
-    console.log('get ready to edit!');
+    showDeleteButtons();
   }
 });
 window.addEventListener('load', function () {
