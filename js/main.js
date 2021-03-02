@@ -195,12 +195,12 @@ function getWatchlistFromDataModel() {
   }
 }
 
-function showDeleteButtons(event){
+function handleDeleteButtons(event){
   data.deleteButton = 'show';
   var $priceColumns = $watchlistList.querySelectorAll('.price-column');
   for(var i = 0; i < $priceColumns.length; i++){
-    $priceColumns[i].firstChild.classList.add('hidden');
-    $priceColumns[i].lastChild.classList.remove('hidden');
+    $priceColumns[i].firstChild.classList.toggle('hidden');
+    $priceColumns[i].lastChild.classList.toggle('hidden');
   }
 }
 
@@ -290,12 +290,7 @@ $watchlistList.addEventListener('click', function () {
 });
 $watchlistPage.addEventListener('click', function(){
   if(event.target.className === 'fas fa-pen') {
-    if(data.deleteButton === 'hide'){
-      showDeleteButtons();
-    }else{
-      hideDeleteButtons();
-    }
-
+    handleDeleteButtons();
   }else if( event.target.classList.contains('fa-minus-circle')){
     deleteWatchlistItem(event);
   }
