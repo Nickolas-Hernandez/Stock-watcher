@@ -130,12 +130,12 @@ function cutPrice(string) {
 }
 
 function switchPage(eventItem) {
-  if (eventItem === $searchIcon) {
-    $watchlistPage.classList.add('hidden');
-    $stockPage.classList.remove('hidden');
-  } else if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
+ if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
+  }else{
+    $watchlistPage.classList.add('hidden');
+    $stockPage.classList.remove('hidden');
   }
 }
 
@@ -197,6 +197,8 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
     if (isWatchlist === true) {
       generateWatchlistItem(xhr.response);
     } else {
+      console.log(xhr.status);
+      console.log(xhr.response);
       data.currentStock.push(xhr.response);
       loadStats(data.currentStock);
     }
@@ -249,9 +251,16 @@ $stockPage.addEventListener('click', function () {
   }
 });
 $watchlistList.addEventListener('click', function () {
-
+  if(event.target.closest('.watchlist-item')){
+    var item = event.target.closest('.watchlist-item');
+    var tickerElement = item.querySelector('.ticker');
+    var ticker = tickerElement.textContent;
+    sendRequestAlphaVantage(overviewStatsRequest, ticker, false);
+    sendRequestAlphaVantage(dailyStatsRequest, ticker, false);
+    switchPage(event.target);
+  }
 });
 window.addEventListener('load', function () {
-  getTrendingStories();
+  // getTrendingStories();
   getWatchlistFromDataModel();
 });
