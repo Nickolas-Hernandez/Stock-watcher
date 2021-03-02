@@ -4,6 +4,7 @@ var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
 var $topNewsList = document.querySelector('.top-news-list');
 var $stockNewsList = document.querySelector('.stock-news-list');
+var $watchlistList = document.querySelector('.watchlist');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
@@ -37,8 +38,8 @@ function loadSuggestion(event) {
 function submitSearch(event) {
   data.currentStock = [];
   clearRelatedNews();
-  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value);
-  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value);
+  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
+  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
   sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
@@ -132,7 +133,7 @@ function switchPage(eventItem) {
   if (eventItem === $searchIcon) {
     $watchlistPage.classList.add('hidden');
     $stockPage.classList.remove('hidden');
-  } else if (eventItem.className === 'fas fa-times') {
+  } else if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
   }
@@ -145,14 +146,60 @@ function clearRelatedNews() {
   }
 }
 
+function saveStockToLocalStorage() {
+  var $ticker = document.querySelector('.stats-ticker');
+  data.watchlist.push($ticker.textContent);
+  sendRequestAlphaVantage(dailyStatsRequest, $ticker.textContent, true);
+}
+
+function generateWatchlistItem(dataObject) {
+  var lastTradingDate = dataObject['Meta Data']['3. Last Refreshed'].slice(0, 10);
+  var listItem = document.createElement('li');
+  var ticker = document.createElement('p');
+  var column = document.createElement('div');
+  var price = document.createElement('p');
+  listItem.className = 'watchlist-item-head row column-full';
+  ticker.className = 'ticker';
+  column.className = 'price-column';
+  price.className = 'price';
+  price.classList.add(getPosOrNegClass(dataObject));
+  ticker.textContent = dataObject['Meta Data']['2. Symbol'];
+  price.textContent = '$' + cutPrice(dataObject['Time Series (Daily)'][lastTradingDate]['4. close']);
+  column.appendChild(price);
+  listItem.appendChild(ticker);
+  listItem.appendChild(column);
+  $watchlistList.appendChild(listItem);
+}
+
+function getPosOrNegClass(dataObject) {
+  var date = dataObject['Meta Data']['3. Last Refreshed'].slice(0, 10);
+  var open = cutPrice(dataObject['Time Series (Daily)'][date]['1. open']);
+  var close = cutPrice(dataObject['Time Series (Daily)'][date]['4. close']);
+  open = parseInt(open);
+  close = parseInt(close);
+  if (close >= open) {
+    return 'profit-text';
+  } else return 'loss-text';
+}
+
+function getWatchlistFromDataModel() {
+  for (var i = 0; i < data.watchlist.length; i++) {
+    sendRequestAlphaVantage(dailyStatsRequest, data.watchlist[i], true);
+  }
+}
+
 // Request Functions
-function sendRequestAlphaVantage(functionType, ticker) {
+function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    data.currentStock.push(xhr.response);
-    loadStats(data.currentStock);
+    if (isWatchlist === true) {
+      generateWatchlistItem(xhr.response);
+    } else {
+      data.currentStock.push(xhr.response);
+      loadStats(data.currentStock);
+    }
   });
   xhr.send();
 }
@@ -182,7 +229,6 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
       createNewsItems(responseObject);
-
     });
   }
   xhr.setRequestHeader('x-rapidapi-key', 'afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e');
@@ -197,6 +243,12 @@ $searchIcon.addEventListener('click', submitSearch);
 $stockPage.addEventListener('click', function () {
   if (event.target.className === 'fas fa-times') {
     switchPage(event.target);
+  } else if (event.target.className === 'fas fa-plus') {
+    switchPage(event.target);
+    saveStockToLocalStorage();
   }
 });
-window.addEventListener('load', getTrendingStories);
+window.addEventListener('load', function () {
+  getTrendingStories();
+  getWatchlistFromDataModel();
+});

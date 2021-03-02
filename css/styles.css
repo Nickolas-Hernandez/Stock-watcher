@@ -201,6 +201,14 @@ i.fa-pen {
   background-color: #b6ecb4;
 }
 
+.profit-text{
+  color: green;
+}
+
+.loss-text{
+  color: red;
+}
+
 @media only screen and (min-width: 768px) {
   .container {
     width: 760px;
