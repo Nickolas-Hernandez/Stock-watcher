@@ -218,6 +218,10 @@ i.fa-pen {
   color: red;
 }
 
+.fa-minus-circle{
+  color: red;
+}
+
 @media only screen and (min-width: 768px) {
   .container {
     width: 760px;
