@@ -204,6 +204,10 @@ function showDeleteButtons(event){
   }
 }
 
+function deleteWatchlistItem(event){
+
+}
+
 // Request Functions
 function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   var xhr = new XMLHttpRequest();
@@ -267,7 +271,7 @@ $stockPage.addEventListener('click', function () {
   }
 });
 $watchlistList.addEventListener('click', function () {
-  if (event.target.closest('.watchlist-item')) {
+  if (event.target.closest('.watchlist-item') && event.target.tagName !== 'I') {
     var item = event.target.closest('.watchlist-item');
     var tickerElement = item.querySelector('.ticker');
     var ticker = tickerElement.textContent;
