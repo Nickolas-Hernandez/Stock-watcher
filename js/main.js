@@ -167,10 +167,12 @@ function generateWatchlistItem(dataObject) {
   ticker.className = 'ticker';
   column.className = 'price-column';
   price.className = 'price';
+  deleteButton.className = 'fas fa-minus-circle hidden';
   price.classList.add(getPosOrNegClass(dataObject));
   ticker.textContent = dataObject['Meta Data']['2. Symbol'];
   price.textContent = '$' + cutPrice(dataObject['Time Series (Daily)'][lastTradingDate]['4. close']);
   column.appendChild(price);
+  column.appendChild(deleteButton);
   listItem.appendChild(ticker);
   listItem.appendChild(column);
   $watchlistList.appendChild(listItem);
