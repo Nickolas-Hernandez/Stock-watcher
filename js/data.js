@@ -3,15 +3,16 @@ var data = {
   suggestionData: null,
   currentStock: [],
   watchlist: [],
-  plusIcon: 'show'
-}
+  plusIcon: 'show',
+  deleteButton: 'hide'
+};
 var previousDataJSON = localStorage.getItem('watchlistData');
 
-if(previousDataJSON !== null){
+if (previousDataJSON !== null) {
   data = JSON.parse(previousDataJSON);
-}else console.log('noDAta');
+}
 
-window.addEventListener('beforeunload', function(){
+window.addEventListener('beforeunload', function () {
   data.view = null;
   data.suggestionData = null;
   data.currentStock = [];
