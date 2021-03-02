@@ -109,6 +109,7 @@ i.fa-pen {
   border-bottom: 1px solid #393e42;
   margin: 0.2rem 0;
   padding-left: 10px;
+  cursor: pointer;
 }
 
 .price-column {
