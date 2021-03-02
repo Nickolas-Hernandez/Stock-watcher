@@ -41,7 +41,7 @@ function submitSearch(event) {
   clearRelatedNews();
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
-  sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
+  // sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
   $searchInput.value = '';
   removeSuggestionList();
   switchPage(event.target);
@@ -261,12 +261,17 @@ $watchlistList.addEventListener('click', function () {
     var ticker = tickerElement.textContent;
     sendRequestAlphaVantage(overviewStatsRequest, ticker, false);
     sendRequestAlphaVantage(dailyStatsRequest, ticker, false);
-    sendRequestCNBC(companyNewsRequest, ticker, null);
+    // sendRequestCNBC(companyNewsRequest, ticker, null);
     data.plusIcon = 'hide';
     switchPage(event.target);
   }
 });
+$watchlistPage.addEventListener('click', function(){
+  if(event.target.className === 'fas fa-pen') {
+    console.log('get ready to edit!');
+  }
+});
 window.addEventListener('load', function () {
-  getTrendingStories();
+  // getTrendingStories();
   getWatchlistFromDataModel();
 });
