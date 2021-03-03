@@ -162,14 +162,17 @@ function generateWatchlistItem(dataObject) {
   var ticker = document.createElement('p');
   var column = document.createElement('div');
   var price = document.createElement('p');
+  var deleteButton = document.createElement('i');
   listItem.className = 'watchlist-item row column-full';
   ticker.className = 'ticker';
   column.className = 'price-column';
   price.className = 'price';
+  deleteButton.className = 'fas fa-minus-circle hidden';
   price.classList.add(getPosOrNegClass(dataObject));
   ticker.textContent = dataObject['Meta Data']['2. Symbol'];
   price.textContent = '$' + cutPrice(dataObject['Time Series (Daily)'][lastTradingDate]['4. close']);
   column.appendChild(price);
+  column.appendChild(deleteButton);
   listItem.appendChild(ticker);
   listItem.appendChild(column);
   $watchlistList.appendChild(listItem);
@@ -189,6 +192,25 @@ function getPosOrNegClass(dataObject) {
 function getWatchlistFromDataModel() {
   for (var i = 0; i < data.watchlist.length; i++) {
     sendRequestAlphaVantage(dailyStatsRequest, data.watchlist[i], true);
+  }
+}
+
+function handleDeleteButtons(event) {
+  data.deleteButton = 'show';
+  var $priceColumns = $watchlistList.querySelectorAll('.price-column');
+  for (var i = 0; i < $priceColumns.length; i++) {
+    $priceColumns[i].firstChild.classList.toggle('hidden');
+    $priceColumns[i].lastChild.classList.toggle('hidden');
+  }
+}
+
+function deleteWatchlistItem(event) {
+  var listItem = event.target.closest('.watchlist-item');
+  listItem.remove();
+  for (var i = 0; i < data.watchlist.length; i++) {
+    if (data.watchlist[i] === listItem.firstChild.textContent) {
+      data.watchlist.splice(i, 1);
+    }
   }
 }
 
@@ -255,7 +277,7 @@ $stockPage.addEventListener('click', function () {
   }
 });
 $watchlistList.addEventListener('click', function () {
-  if (event.target.closest('.watchlist-item')) {
+  if (event.target.closest('.watchlist-item') && event.target.tagName !== 'I') {
     var item = event.target.closest('.watchlist-item');
     var tickerElement = item.querySelector('.ticker');
     var ticker = tickerElement.textContent;
@@ -264,6 +286,13 @@ $watchlistList.addEventListener('click', function () {
     sendRequestCNBC(companyNewsRequest, ticker, null);
     data.plusIcon = 'hide';
     switchPage(event.target);
+  }
+});
+$watchlistPage.addEventListener('click', function () {
+  if (event.target.className === 'fas fa-pen') {
+    handleDeleteButtons();
+  } else if (event.target.classList.contains('fa-minus-circle')) {
+    deleteWatchlistItem(event);
   }
 });
 window.addEventListener('load', function () {

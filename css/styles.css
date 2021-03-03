@@ -109,9 +109,11 @@ i.fa-pen {
   border-bottom: 1px solid #393e42;
   margin: 0.2rem 0;
   padding-left: 10px;
+  cursor: pointer;
 }
 
-.price-column {
+.price-column,
+.price-column-head {
   width: 25%;
   text-align: center;
 }
@@ -213,6 +215,10 @@ i.fa-pen {
 }
 
 .loss-text {
+  color: red;
+}
+
+.fa-minus-circle{
   color: red;
 }
 
