@@ -218,7 +218,7 @@ i.fa-pen {
   color: red;
 }
 
-.fa-minus-circle{
+.fa-minus-circle {
   color: red;
 }
 
@@ -236,8 +236,10 @@ i.fa-pen {
   }
 }
 
-@media only screen and (min-width: 1024px){
-
+@media only screen and (min-width: 1025px) {
+  .container {
+    width: 1000px;
+  }
 }
 
 .hidden {
