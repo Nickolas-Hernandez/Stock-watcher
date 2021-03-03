@@ -9,6 +9,7 @@ var $watchlistList = document.querySelector('.watchlist');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var $plusIcon = document.querySelector('.fa-plus');
+var $spinnerContainer = document.querySelector('.loading-icon-container')
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
@@ -213,6 +214,10 @@ function deleteWatchlistItem(event) {
       data.watchlist.splice(i, 1);
     }
   }
+}
+
+function loadSpinner(){
+
 }
 
 // Request Functions
