@@ -39,9 +39,9 @@ function loadSuggestion(event) {
 function submitSearch(event) {
   data.currentStock = [];
   clearRelatedNews();
-  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
-  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
-  sendRequestCNBC(companyNewsRequest, $searchInput.value, null);
+  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value.toUpperCase(), false);
+  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value.toUpperCase(), false);
+  sendRequestCNBC(companyNewsRequest, $searchInput.value.toUpperCase(), null);
   $searchInput.value = '';
   removeSuggestionList();
   switchPage(event.target);
@@ -270,7 +270,7 @@ $stockPage.addEventListener('click', function () {
   if (event.target.className === 'fas fa-times') {
     data.plusIcon = 'show';
     switchPage(event.target);
-
+    clearRelatedNews();
   } else if (event.target.className === 'fas fa-plus') {
     switchPage(event.target);
     saveStockToLocalStorage();
