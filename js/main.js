@@ -69,11 +69,11 @@ function createNewsItems(dataArray) {
     var headlineImage = document.createElement('img');
     var headlineAnchor = document.createElement('a');
     if (dataArray[i]['metadata:id']) {
-      headlineText.textContent = dataArray[i].title.slice(0, 45) + ' . . .';
+      headlineText.textContent = dataArray[i].title;
       headlineImage.setAttribute('src', dataArray[i]['metadata:image']['metadata:imagepath']);
       headlineAnchor.setAttribute('href', dataArray[i].link);
     } else {
-      headlineText.textContent = dataArray[i].headline.slice(0, 45) + ' . . .';
+      headlineText.textContent = dataArray[i].headline;
       headlineImage.setAttribute('src', dataArray[i].promoImage.url);
       headlineAnchor.setAttribute('href', dataArray[i].url);
     }
