@@ -240,6 +240,15 @@ i.fa-pen {
   .container {
     width: 1000px;
   }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .headline-container h3,
+  .watchlist p {
+    font-size: 1.1rem;
+  }
 }
 
 .hidden {
