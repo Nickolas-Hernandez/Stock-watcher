@@ -1,4 +1,5 @@
 // Global variables
+var $searchBar = document.querySelector('.search-bar');
 var $searchInput = document.querySelector('#search-input');
 var $suggestionBox = document.querySelector('.auto-list');
 var $searchIcon = document.querySelector('.fa-search');
@@ -266,6 +267,10 @@ function sendRequestCNBC(requestType, ticker, input) {
 $searchInput.addEventListener('input', autoCompleteSuggest);
 $suggestionBox.addEventListener('click', loadSuggestion);
 $searchIcon.addEventListener('click', submitSearch);
+$searchBar.addEventListener('submit', function () {
+  event.preventDefault();
+  submitSearch(event);
+});
 $stockPage.addEventListener('click', function () {
   if (event.target.className === 'fas fa-times') {
     data.plusIcon = 'show';
