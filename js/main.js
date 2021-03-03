@@ -40,8 +40,8 @@ function loadSuggestion(event) {
 function submitSearch(event) {
   data.currentStock = [];
   clearRelatedNews();
-  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value.toUpperCase(), false);
-  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value.toUpperCase(), false);
+  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
+  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
   sendRequestCNBC(companyNewsRequest, $searchInput.value.toUpperCase(), null);
   $searchInput.value = '';
   removeSuggestionList();
@@ -217,6 +217,7 @@ function deleteWatchlistItem(event) {
 
 // Request Functions
 function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
+  if (ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
   xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   xhr.responseType = 'json';
