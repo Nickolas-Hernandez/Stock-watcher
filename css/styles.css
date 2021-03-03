@@ -246,7 +246,8 @@ i.fa-pen {
   }
 
   .headline-container h3,
-  .watchlist p {
+  .watchlist p,
+  .stats-table-container {
     font-size: 1.1rem;
   }
 }
