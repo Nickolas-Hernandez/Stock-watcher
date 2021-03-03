@@ -270,7 +270,7 @@ $stockPage.addEventListener('click', function () {
   if (event.target.className === 'fas fa-times') {
     data.plusIcon = 'show';
     switchPage(event.target);
-
+    clearRelatedNews();
   } else if (event.target.className === 'fas fa-plus') {
     switchPage(event.target);
     saveStockToLocalStorage();
