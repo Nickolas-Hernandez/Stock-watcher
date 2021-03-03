@@ -226,6 +226,22 @@ i.fa-pen {
   color: red;
 }
 
+.loading-icon-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fa-spinner {
+  font-size: 48px;
+  color: white;
+}
+
 @media only screen and (min-width: 768px) {
   .container {
     width: 700px;
