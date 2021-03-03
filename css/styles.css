@@ -133,8 +133,11 @@ i.fa-pen {
 }
 
 .headline-container h3 {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 300;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .news-image-container {
@@ -218,13 +221,13 @@ i.fa-pen {
   color: red;
 }
 
-.fa-minus-circle{
+.fa-minus-circle {
   color: red;
 }
 
 @media only screen and (min-width: 768px) {
   .container {
-    width: 760px;
+    width: 700px;
   }
 
   .column-half {
@@ -233,6 +236,22 @@ i.fa-pen {
 
   .stock-stats-section {
     padding-top: 2rem;
+  }
+}
+
+@media only screen and (min-width: 1025px) {
+  .container {
+    width: 1000px;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .headline-container h3,
+  .watchlist p,
+  .stats-table-container {
+    font-size: 1.1rem;
   }
 }
 
