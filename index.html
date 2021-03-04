@@ -16,18 +16,21 @@
 <body>
   <main>
     <div class="watchlist-page container " data-view="watchlist">
-      <section class="search-bar column-full">
-        <input type="text" name="search-field" id="search-input" placeholder="Search Ticker Symbols">
-        <i class="fas fa-search"></i>
+      <form class="search-bar column-full">
+        <input type="text" name="search-field" id="search-input" placeholder="Search Ticker Symbols (TSLA, AAPL, etc.)" class="column-full">
         <div class="auto-list-container">
           <ul class="auto-list"></ul>
         </div>
-      </section>
+        <i class="fas fa-spinner searchbar-loading-icon hidden"></i>
+      </form>
+      <div class="error-container hidden">
+        <p class="error-message">! Not a Valid Symbol</p>
+      </div>
       <div class="row lists-sections">
         <section class="watchlist-section column-half">
           <header class="watchlist-header row">
             <h2 class="watchlist-text">My Watchlist</h2>
-            <i class="fas fa-pen"></i>
+            <i class="fas fa-pen edit-icon"></i>
             <span class="full-bar column-full"></span>
           </header>
           <ul class="watchlist column-full">
@@ -37,6 +40,7 @@
                 <p class="price">&dollar;&dollar;&dollar;</p>
               </div>
             </li>
+            <li class="watchlist-placeholder"><p>Your watchlist is empty. . .</p></li>
           </ul>
         </section>
         <section class="top-news-section column-half">
@@ -51,8 +55,7 @@
     <div class="stock-page container row hidden" data-view="stockPage">
       <header class="overview-header search-bar column-full row">
         <h2 class="watchlist-text">Overview</h2>
-        <i class="fas fa-plus"></i>
-        <i class="fas fa-times"></i>
+        <i class="fas fa-times close-icon"></i>
         <span class="full-bar column-full"></span>
       </header>
       <section class="stock-stats-section column-half">
@@ -91,7 +94,10 @@
               </tbody>
             </table>
           </section>
-
+        </div>
+        <div class="row add-to-watchlist-wrapper">
+          <i class="fas fa-plus plus-icon"></i>
+          <p>Add to Watchlist</p>
         </div>
       </section>
       <section class="top-news-section column-half">
@@ -103,6 +109,9 @@
       </section>
     </div>
   </main>
+  <div class="loading-icon-container hidden">
+    <i class="fas fa-spinner loading-icon"></i>
+  </div>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>

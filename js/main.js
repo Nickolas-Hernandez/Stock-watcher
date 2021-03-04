@@ -1,13 +1,17 @@
 // Global variables
+var $searchBar = document.querySelector('.search-bar');
 var $searchInput = document.querySelector('#search-input');
 var $suggestionBox = document.querySelector('.auto-list');
-var $searchIcon = document.querySelector('.fa-search');
 var $topNewsList = document.querySelector('.top-news-list');
 var $stockNewsList = document.querySelector('.stock-news-list');
 var $watchlistList = document.querySelector('.watchlist');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
-var $plusIcon = document.querySelector('.fa-plus');
+var $addToWatchlist = document.querySelector('.add-to-watchlist-wrapper');
+var $spinnerContainer = document.querySelector('.loading-icon-container');
+var $searchbarIcon = document.querySelector('.searchbar-loading-icon');
+var $watchlistPlaceholder = document.querySelector('.watchlist-placeholder');
+var $errorMessage = document.querySelector('.error-container');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
@@ -17,7 +21,7 @@ var autoCompleteRequest = 'AUTO';
 // Functions
 function autoCompleteSuggest(event) {
   removeSuggestionList();
-  if (event.target.value.length >= 3) {
+  if (event.target.value.length >= 2) {
     sendRequestCNBC(autoCompleteRequest, null, event.target.value);
     $suggestionBox.classList.add('active');
   }
@@ -37,10 +41,11 @@ function loadSuggestion(event) {
 }
 
 function submitSearch(event) {
+  $errorMessage.classList.add('hidden');
   data.currentStock = [];
   clearRelatedNews();
-  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value.toUpperCase(), false);
-  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value.toUpperCase(), false);
+  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
+  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
   sendRequestCNBC(companyNewsRequest, $searchInput.value.toUpperCase(), null);
   $searchInput.value = '';
   removeSuggestionList();
@@ -78,14 +83,16 @@ function createNewsItems(dataArray) {
       headlineAnchor.setAttribute('href', dataArray[i].url);
     }
     headlineAnchor.setAttribute('target', '_blank');
-    listItem.className = 'top-news-item row';
+    headlineAnchor.className = 'headline-anchor-tag row';
+    listItem.className = 'top-news-item';
     headlineContainer.className = 'headline-container';
     imageContainer.className = 'news-image-container';
     headlineAnchor.appendChild(headlineText);
-    headlineContainer.appendChild(headlineAnchor);
+    headlineContainer.appendChild(headlineText);
     imageContainer.appendChild(headlineImage);
-    listItem.appendChild(headlineContainer);
-    listItem.appendChild(imageContainer);
+    headlineAnchor.appendChild(headlineContainer);
+    headlineAnchor.appendChild(imageContainer);
+    listItem.appendChild(headlineAnchor);
     if (dataArray[i]['metadata:id']) {
       $stockNewsList.appendChild(listItem);
     } else $topNewsList.appendChild(listItem);
@@ -131,7 +138,12 @@ function cutPrice(string) {
 }
 
 function switchPage(eventItem) {
-  if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
+  if (eventItem === null) {
+    $watchlistPage.classList.remove('hidden');
+    $stockPage.classList.add('hidden');
+    return;
+  }
+  if (eventItem.classList.contains('close-icon') || eventItem.closest('.add-to-watchlist-wrapper')) {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
   } else {
@@ -139,8 +151,8 @@ function switchPage(eventItem) {
     $stockPage.classList.remove('hidden');
   }
   if (data.plusIcon === 'hide') {
-    $plusIcon.classList.add('hidden');
-  } else $plusIcon.className = 'fas fa-plus';
+    $addToWatchlist.classList.add('hidden');
+  } else $addToWatchlist.className = 'row add-to-watchlist-wrapper';
 }
 
 function clearRelatedNews() {
@@ -157,6 +169,7 @@ function saveStockToLocalStorage() {
 }
 
 function generateWatchlistItem(dataObject) {
+  clearRelatedNews();
   var lastTradingDate = dataObject['Meta Data']['3. Last Refreshed'].slice(0, 10);
   var listItem = document.createElement('li');
   var ticker = document.createElement('p');
@@ -167,7 +180,7 @@ function generateWatchlistItem(dataObject) {
   ticker.className = 'ticker';
   column.className = 'price-column';
   price.className = 'price';
-  deleteButton.className = 'fas fa-minus-circle hidden';
+  deleteButton.className = 'fas fa-minus-circle delete-button hidden';
   price.classList.add(getPosOrNegClass(dataObject));
   ticker.textContent = dataObject['Meta Data']['2. Symbol'];
   price.textContent = '$' + cutPrice(dataObject['Time Series (Daily)'][lastTradingDate]['4. close']);
@@ -196,7 +209,6 @@ function getWatchlistFromDataModel() {
 }
 
 function handleDeleteButtons(event) {
-  data.deleteButton = 'show';
   var $priceColumns = $watchlistList.querySelectorAll('.price-column');
   for (var i = 0; i < $priceColumns.length; i++) {
     $priceColumns[i].firstChild.classList.toggle('hidden');
@@ -214,23 +226,42 @@ function deleteWatchlistItem(event) {
   }
 }
 
+function handleSpinner(response) {
+  $spinnerContainer.classList.toggle('hidden');
+}
+
+function removePlaceholder() {
+  if (data.watchlist.length > 0) {
+    $watchlistPlaceholder.classList.add('hidden');
+  } else $watchlistPlaceholder.className = 'watchlist-placeholder';
+}
+
 // Request Functions
 function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
+  handleSpinner();
+  if (ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
   xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    if (xhr.response['Error Message'] || xhr.response === {}) {
+      switchPage(null);
+      $errorMessage.classList.remove('hidden');
+      return;
+    }
     if (isWatchlist === true) {
       generateWatchlistItem(xhr.response);
     } else {
       data.currentStock.push(xhr.response);
       loadStats(data.currentStock);
     }
+    handleSpinner();
   });
   xhr.send();
 }
 
 function sendRequestCNBC(requestType, ticker, input) {
+  if (requestType !== autoCompleteRequest) handleSpinner();
   if (ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
   var responseObject;
@@ -240,6 +271,7 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
       data.suggestionData = responseObject;
+      $searchbarIcon.classList.add('hidden');
       createAutoSuggestItem(responseObject);
     });
   } else if (requestType === trendingStoriesRequest) {
@@ -248,6 +280,7 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.data.mostPopular.assets;
       createNewsItems(responseObject);
+      handleSpinner();
     });
   } else if (requestType === companyNewsRequest) {
     xhr.open('GET', `https://cnbc.p.rapidapi.com/news/list-by-symbol?tickersymbol=${ticker}&page=1&pagesize=10`);
@@ -255,6 +288,7 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
       createNewsItems(responseObject);
+      handleSpinner();
     });
   }
   xhr.setRequestHeader('x-rapidapi-key', 'afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e');
@@ -263,17 +297,27 @@ function sendRequestCNBC(requestType, ticker, input) {
 }
 
 // Event Listeners
-$searchInput.addEventListener('input', autoCompleteSuggest);
-$suggestionBox.addEventListener('click', loadSuggestion);
-$searchIcon.addEventListener('click', submitSearch);
+$searchInput.addEventListener('input', function () {
+  autoCompleteSuggest(event);
+  $searchbarIcon.classList.remove('hidden');
+});
+$suggestionBox.addEventListener('click', function () {
+  loadSuggestion(event);
+  submitSearch(event);
+});
+$searchBar.addEventListener('submit', function () {
+  event.preventDefault();
+  submitSearch(event);
+});
 $stockPage.addEventListener('click', function () {
-  if (event.target.className === 'fas fa-times') {
+  if (event.target.classList.contains('close-icon')) {
     data.plusIcon = 'show';
     switchPage(event.target);
     clearRelatedNews();
-  } else if (event.target.className === 'fas fa-plus') {
+  } else if (event.target.closest('.add-to-watchlist-wrapper')) {
     switchPage(event.target);
     saveStockToLocalStorage();
+    removePlaceholder();
   }
 });
 $watchlistList.addEventListener('click', function () {
@@ -281,6 +325,7 @@ $watchlistList.addEventListener('click', function () {
     var item = event.target.closest('.watchlist-item');
     var tickerElement = item.querySelector('.ticker');
     var ticker = tickerElement.textContent;
+    data.currentStock = [];
     sendRequestAlphaVantage(overviewStatsRequest, ticker, false);
     sendRequestAlphaVantage(dailyStatsRequest, ticker, false);
     sendRequestCNBC(companyNewsRequest, ticker, null);
@@ -289,13 +334,14 @@ $watchlistList.addEventListener('click', function () {
   }
 });
 $watchlistPage.addEventListener('click', function () {
-  if (event.target.className === 'fas fa-pen') {
+  if (event.target.classList.contains('edit-icon')) {
     handleDeleteButtons();
-  } else if (event.target.classList.contains('fa-minus-circle')) {
+  } else if (event.target.classList.contains('delete-button')) {
     deleteWatchlistItem(event);
   }
 });
 window.addEventListener('load', function () {
   getTrendingStories();
   getWatchlistFromDataModel();
+  removePlaceholder();
 });
