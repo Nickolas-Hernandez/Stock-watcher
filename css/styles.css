@@ -237,8 +237,16 @@ i.fa-pen {
   align-items: center;
 }
 
-.fa-spinner {
+.loading-icon {
   font-size: 36px;
+}
+
+.searchbar-loading-icon {
+  font-size: 16px;
+}
+
+.searchbar-loading-icon,
+.loading-icon {
   color: white;
   animation: spinner 2s linear infinite;
 }
