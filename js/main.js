@@ -9,7 +9,7 @@ var $watchlistList = document.querySelector('.watchlist');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var $plusIcon = document.querySelector('.fa-plus');
-var $spinnerContainer = document.querySelector('.loading-icon-container')
+var $spinnerContainer = document.querySelector('.loading-icon-container');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
@@ -216,12 +216,13 @@ function deleteWatchlistItem(event) {
   }
 }
 
-function loadSpinner(){
-
+function handleSpinner() {
+  $spinnerContainer.classList.toggle('hidden');
 }
 
 // Request Functions
 function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
+  handleSpinner();
   if (ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
   xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
@@ -233,11 +234,13 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
       data.currentStock.push(xhr.response);
       loadStats(data.currentStock);
     }
+    handleSpinner();
   });
   xhr.send();
 }
 
 function sendRequestCNBC(requestType, ticker, input) {
+  handleSpinner();
   if (ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
   var responseObject;
@@ -248,6 +251,7 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       data.suggestionData = responseObject;
       createAutoSuggestItem(responseObject);
+      handleSpinner();
     });
   } else if (requestType === trendingStoriesRequest) {
     xhr.open('GET', 'https://cnbc.p.rapidapi.com/news/list-trending');
@@ -255,6 +259,7 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.data.mostPopular.assets;
       createNewsItems(responseObject);
+      handleSpinner();
     });
   } else if (requestType === companyNewsRequest) {
     xhr.open('GET', `https://cnbc.p.rapidapi.com/news/list-by-symbol?tickersymbol=${ticker}&page=1&pagesize=10`);
@@ -262,6 +267,7 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
       createNewsItems(responseObject);
+      handleSpinner();
     });
   }
   xhr.setRequestHeader('x-rapidapi-key', 'afbc32455amsh2b70f92ea852178p1d2d81jsn1c3b08275a2e');
