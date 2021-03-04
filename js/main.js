@@ -11,6 +11,7 @@ var $addToWatchlist = document.querySelector('.add-to-watchlist-wrapper');
 var $spinnerContainer = document.querySelector('.loading-icon-container');
 var $searchbarIcon = document.querySelector('.searchbar-loading-icon');
 var $watchlistPlaceholder = document.querySelector('.watchlist-placeholder');
+var $errorMessage = document.querySelector('.error-container');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
@@ -40,6 +41,7 @@ function loadSuggestion(event) {
 }
 
 function submitSearch(event) {
+  $errorMessage.classList.add('hidden');
   data.currentStock = [];
   clearRelatedNews();
   sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
@@ -136,6 +138,11 @@ function cutPrice(string) {
 }
 
 function switchPage(eventItem) {
+  if (eventItem === null) {
+    $watchlistPage.classList.remove('hidden');
+    $stockPage.classList.add('hidden');
+    return;
+  }
   if (eventItem.classList.contains('close-icon') || eventItem.closest('.add-to-watchlist-wrapper')) {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
@@ -237,6 +244,11 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
+    if (xhr.response['Error Message'] || xhr.response === {}) {
+      switchPage(null);
+      $errorMessage.classList.remove('hidden');
+      return;
+    }
     if (isWatchlist === true) {
       generateWatchlistItem(xhr.response);
     } else {
