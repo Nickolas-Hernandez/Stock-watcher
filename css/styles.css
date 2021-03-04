@@ -247,7 +247,7 @@ i.fa-pen {
 .searchbar-loading-icon {
   font-size: 18px;
   position: absolute;
-  right: 12px;
+  right: 50%;
   top: 7px;
 }
 
@@ -285,6 +285,10 @@ i.fa-pen {
   .watchlist p,
   .stats-table-container {
     font-size: 1.1rem;
+  }
+
+  .searchbar-loading-icon {
+    right: 75%;
   }
 }
 
