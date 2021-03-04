@@ -298,6 +298,7 @@ $stockPage.addEventListener('click', function () {
   } else if (event.target.className === 'fas fa-plus') {
     switchPage(event.target);
     saveStockToLocalStorage();
+    removePlaceholder();
   }
 });
 $watchlistList.addEventListener('click', function () {
