@@ -10,6 +10,7 @@ var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var $plusIcon = document.querySelector('.fa-plus');
 var $spinnerContainer = document.querySelector('.loading-icon-container');
+var $watchlistPlaceholder = document.querySelector('.watchlist-placeholder');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
@@ -221,6 +222,12 @@ function handleSpinner(response) {
   $spinnerContainer.classList.toggle('hidden');
 }
 
+function removePlaceholder() {
+  if (data.watchlist.length > 0) {
+    $watchlistPlaceholder.classList.add('hidden');
+  } else $watchlistPlaceholder.className = 'watchlist-placeholder';
+}
+
 // Request Functions
 function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   handleSpinner();
@@ -233,7 +240,7 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
       generateWatchlistItem(xhr.response);
     } else {
       data.currentStock.push(xhr.response);
-      loadStats(data.currentStock); // BUGGGGG
+      loadStats(data.currentStock);
     }
     handleSpinner();
   });
@@ -316,4 +323,5 @@ $watchlistPage.addEventListener('click', function () {
 window.addEventListener('load', function () {
   getTrendingStories();
   getWatchlistFromDataModel();
+  removePlaceholder();
 });
