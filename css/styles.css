@@ -57,10 +57,6 @@ i {
   cursor: pointer;
 }
 
-i.fa-search {
-  font-size: 2rem;
-}
-
 .watchlist-section,
 .top-news-section {
   padding-top: 2rem;
