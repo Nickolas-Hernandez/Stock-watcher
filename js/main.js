@@ -2,7 +2,6 @@
 var $searchBar = document.querySelector('.search-bar');
 var $searchInput = document.querySelector('#search-input');
 var $suggestionBox = document.querySelector('.auto-list');
-var $searchIcon = document.querySelector('.fa-search');
 var $topNewsList = document.querySelector('.top-news-list');
 var $stockNewsList = document.querySelector('.stock-news-list');
 var $watchlistList = document.querySelector('.watchlist');
@@ -284,8 +283,10 @@ function sendRequestCNBC(requestType, ticker, input) {
 
 // Event Listeners
 $searchInput.addEventListener('input', autoCompleteSuggest);
-$suggestionBox.addEventListener('click', loadSuggestion);
-$searchIcon.addEventListener('click', submitSearch);
+$suggestionBox.addEventListener('click', function () {
+  loadSuggestion(event);
+  submitSearch(event);
+});
 $searchBar.addEventListener('submit', function () {
   event.preventDefault();
   submitSearch(event);
