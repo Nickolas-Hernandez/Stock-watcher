@@ -298,6 +298,7 @@ $watchlistList.addEventListener('click', function () {
     var item = event.target.closest('.watchlist-item');
     var tickerElement = item.querySelector('.ticker');
     var ticker = tickerElement.textContent;
+    data.currentStock = [];
     sendRequestAlphaVantage(overviewStatsRequest, ticker, false);
     sendRequestAlphaVantage(dailyStatsRequest, ticker, false);
     sendRequestCNBC(companyNewsRequest, ticker, null);
