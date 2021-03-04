@@ -157,6 +157,7 @@ i.fa-pen {
 
 .overview-header {
   align-items: center;
+  justify-content: space-between;
 }
 
 .fa-times {
@@ -166,9 +167,8 @@ i.fa-pen {
 
 .fa-plus {
   font-size: 18px;
-  margin-right: auto;
-  margin-left: 0.8rem;
   color: #b6ecb4;
+  margin-right: 0.4rem;
 }
 
 .stock-stats-section {
@@ -256,6 +256,12 @@ i.fa-pen {
   width: 100%;
   text-align: center;
   padding-top: 1rem;
+}
+
+.add-to-watchlist-wrapper {
+  padding-left: 0.4rem;
+  padding-top: 0.6rem;
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 768px) {

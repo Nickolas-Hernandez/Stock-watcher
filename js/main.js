@@ -7,7 +7,7 @@ var $stockNewsList = document.querySelector('.stock-news-list');
 var $watchlistList = document.querySelector('.watchlist');
 var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
-var $plusIcon = document.querySelector('.fa-plus');
+var $addToWatchlist = document.querySelector('.add-to-watchlist-wrapper');
 var $spinnerContainer = document.querySelector('.loading-icon-container');
 var $searchbarIcon = document.querySelector('.searchbar-loading-icon');
 var $watchlistPlaceholder = document.querySelector('.watchlist-placeholder');
@@ -136,7 +136,7 @@ function cutPrice(string) {
 }
 
 function switchPage(eventItem) {
-  if (eventItem.className === 'fas fa-times' || eventItem.className === 'fas fa-plus') {
+  if (eventItem.className === 'fas fa-times' || eventItem.closest('.add-to-watchlist-wrapper')) {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
   } else {
@@ -144,8 +144,8 @@ function switchPage(eventItem) {
     $stockPage.classList.remove('hidden');
   }
   if (data.plusIcon === 'hide') {
-    $plusIcon.classList.add('hidden');
-  } else $plusIcon.className = 'fas fa-plus';
+    $addToWatchlist.classList.add('hidden');
+  } else $addToWatchlist.className = 'row add-to-watchlist-wrapper';
 }
 
 function clearRelatedNews() {
@@ -301,7 +301,7 @@ $stockPage.addEventListener('click', function () {
     data.plusIcon = 'show';
     switchPage(event.target);
     clearRelatedNews();
-  } else if (event.target.className === 'fas fa-plus') {
+  } else if (event.target.closest('.add-to-watchlist-wrapper')) {
     switchPage(event.target);
     saveStockToLocalStorage();
     removePlaceholder();
