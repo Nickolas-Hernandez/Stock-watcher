@@ -250,7 +250,6 @@ function sendRequestCNBC(requestType, ticker, input) {
       responseObject = JSON.parse(xhr.response);
       data.suggestionData = responseObject;
       createAutoSuggestItem(responseObject);
-      handleSpinner();
     });
   } else if (requestType === trendingStoriesRequest) {
     xhr.open('GET', 'https://cnbc.p.rapidapi.com/news/list-trending');
