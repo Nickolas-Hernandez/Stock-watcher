@@ -226,8 +226,7 @@ i.fa-pen {
   color: red;
 }
 
-.loading-icon-container,
-.searchbar-loading-icon-container {
+.loading-icon-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -238,23 +237,18 @@ i.fa-pen {
   align-items: center;
 }
 
-.searchbar-loading-icon-container {
-  height: 100%;
-  width: 50%;
-}
-
+.searchbar-loading-icon,
 .loading-icon {
   font-size: 36px;
+  color: white;
+  animation: spinner 2s linear infinite;
 }
 
 .searchbar-loading-icon {
-  font-size: 16px;
-}
-
-.searchbar-loading-icon,
-.loading-icon {
-  color: white;
-  animation: spinner 2s linear infinite;
+  font-size: 18px;
+  position: absolute;
+  right: 12px;
+  top: 7px;
 }
 
 .watchlist-placeholder p {

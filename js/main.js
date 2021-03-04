@@ -9,6 +9,7 @@ var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var $plusIcon = document.querySelector('.fa-plus');
 var $spinnerContainer = document.querySelector('.loading-icon-container');
+var $searchbarIcon = document.querySelector('.searchbar-loading-icon');
 var $watchlistPlaceholder = document.querySelector('.watchlist-placeholder');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
 var overviewStatsRequest = 'OVERVIEW';
@@ -19,7 +20,7 @@ var autoCompleteRequest = 'AUTO';
 // Functions
 function autoCompleteSuggest(event) {
   removeSuggestionList();
-  if (event.target.value.length >= 3) {
+  if (event.target.value.length >= 2) {
     sendRequestCNBC(autoCompleteRequest, null, event.target.value);
     $suggestionBox.classList.add('active');
   }
@@ -257,6 +258,7 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
       data.suggestionData = responseObject;
+      $searchbarIcon.classList.add('hidden');
       createAutoSuggestItem(responseObject);
     });
   } else if (requestType === trendingStoriesRequest) {
@@ -282,7 +284,10 @@ function sendRequestCNBC(requestType, ticker, input) {
 }
 
 // Event Listeners
-$searchInput.addEventListener('input', autoCompleteSuggest);
+$searchInput.addEventListener('input', function () {
+  autoCompleteSuggest(event);
+  $searchbarIcon.classList.remove('hidden');
+});
 $suggestionBox.addEventListener('click', function () {
   loadSuggestion(event);
   submitSearch(event);
