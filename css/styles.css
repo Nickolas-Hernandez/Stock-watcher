@@ -226,7 +226,8 @@ i.fa-pen {
   color: red;
 }
 
-.loading-icon-container {
+.loading-icon-container,
+.searchbar-loading-icon-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -235,6 +236,11 @@ i.fa-pen {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.searchbar-loading-icon-container {
+  height: 100%;
+  width: 50%;
 }
 
 .loading-icon {
