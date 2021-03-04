@@ -136,7 +136,7 @@ function cutPrice(string) {
 }
 
 function switchPage(eventItem) {
-  if (eventItem.className === 'fas fa-times' || eventItem.closest('.add-to-watchlist-wrapper')) {
+  if (eventItem.classList.contains('close-icon') || eventItem.closest('.add-to-watchlist-wrapper')) {
     $watchlistPage.classList.remove('hidden');
     $stockPage.classList.add('hidden');
   } else {
@@ -172,7 +172,7 @@ function generateWatchlistItem(dataObject) {
   ticker.className = 'ticker';
   column.className = 'price-column';
   price.className = 'price';
-  deleteButton.className = 'fas fa-minus-circle hidden';
+  deleteButton.className = 'fas fa-minus-circle delete-button hidden';
   price.classList.add(getPosOrNegClass(dataObject));
   ticker.textContent = dataObject['Meta Data']['2. Symbol'];
   price.textContent = '$' + cutPrice(dataObject['Time Series (Daily)'][lastTradingDate]['4. close']);
@@ -297,7 +297,7 @@ $searchBar.addEventListener('submit', function () {
   submitSearch(event);
 });
 $stockPage.addEventListener('click', function () {
-  if (event.target.className === 'fas fa-times') {
+  if (event.target.classList.contains('close-icon')) {
     data.plusIcon = 'show';
     switchPage(event.target);
     clearRelatedNews();
@@ -321,9 +321,9 @@ $watchlistList.addEventListener('click', function () {
   }
 });
 $watchlistPage.addEventListener('click', function () {
-  if (event.target.className === 'fas fa-pen') {
+  if (event.target.classList.contains('edit-icon')) {
     handleDeleteButtons();
-  } else if (event.target.classList.contains('fa-minus-circle')) {
+  } else if (event.target.classList.contains('delete-button')) {
     deleteWatchlistItem(event);
   }
 });

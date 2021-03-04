@@ -73,7 +73,7 @@ i {
   align-items: center;
 }
 
-i.fa-pen {
+.edit-icon {
   padding-right: 5px;
 }
 
@@ -160,12 +160,12 @@ i.fa-pen {
   justify-content: space-between;
 }
 
-.fa-times {
+.close-icon {
   font-size: 24px;
   padding-right: 5px;
 }
 
-.fa-plus {
+.plus-icon {
   font-size: 18px;
   color: #b6ecb4;
   margin-right: 0.4rem;
@@ -222,7 +222,7 @@ i.fa-pen {
   color: red;
 }
 
-.fa-minus-circle {
+.delete-button {
   color: red;
 }
 
