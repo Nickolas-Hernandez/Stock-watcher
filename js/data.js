@@ -3,8 +3,7 @@ var data = {
   suggestionData: null,
   currentStock: [],
   watchlist: [],
-  plusIcon: 'show',
-  deleteButton: 'hide'
+  plusIcon: 'show'
 };
 var previousDataJSON = localStorage.getItem('watchlistData');
 

@@ -143,7 +143,7 @@ i.fa-pen {
 .news-image-container {
   width: 70px;
   height: 50px;
-  border-radius: 10px;
+  border-radius: 4px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -178,7 +178,7 @@ i.fa-pen {
 .stock-stats-container {
   width: 100%;
   height: 220px;
-  border-radius: 25px;
+  border-radius: 8px;
   padding: 1rem;
   color: black;
   display: flex;
@@ -238,8 +238,9 @@ i.fa-pen {
 }
 
 .fa-spinner {
-  font-size: 48px;
+  font-size: 36px;
   color: white;
+  animation: spinner 2s linear infinite;
 }
 
 @media only screen and (min-width: 768px) {
@@ -274,4 +275,14 @@ i.fa-pen {
 
 .hidden {
   display: none;
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }

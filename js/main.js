@@ -198,7 +198,6 @@ function getWatchlistFromDataModel() {
 }
 
 function handleDeleteButtons(event) {
-  data.deleteButton = 'show';
   var $priceColumns = $watchlistList.querySelectorAll('.price-column');
   for (var i = 0; i < $priceColumns.length; i++) {
     $priceColumns[i].firstChild.classList.toggle('hidden');
@@ -216,7 +215,7 @@ function deleteWatchlistItem(event) {
   }
 }
 
-function handleSpinner() {
+function handleSpinner(response) {
   $spinnerContainer.classList.toggle('hidden');
 }
 
@@ -232,7 +231,7 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
       generateWatchlistItem(xhr.response);
     } else {
       data.currentStock.push(xhr.response);
-      loadStats(data.currentStock);
+      loadStats(data.currentStock); // BUGGGGG
     }
     handleSpinner();
   });
@@ -240,7 +239,7 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
 }
 
 function sendRequestCNBC(requestType, ticker, input) {
-  handleSpinner();
+  if (requestType !== autoCompleteRequest) handleSpinner();
   if (ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
   var responseObject;
