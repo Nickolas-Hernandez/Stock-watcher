@@ -121,11 +121,16 @@ i.fa-pen {
 .top-news-item {
   width: 100%;
   height: 70px;
+  border-bottom: 1px solid #393e42;
+  margin: 0.4rem 0;
+}
+
+.headline-anchor-tag {
+  height: 100%;
+  width: 100%;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #393e42;
-  margin: 0.4rem 0;
 }
 
 .headline-container {

@@ -80,14 +80,16 @@ function createNewsItems(dataArray) {
       headlineAnchor.setAttribute('href', dataArray[i].url);
     }
     headlineAnchor.setAttribute('target', '_blank');
-    listItem.className = 'top-news-item row';
+    headlineAnchor.className = 'headline-anchor-tag row';
+    listItem.className = 'top-news-item';
     headlineContainer.className = 'headline-container';
     imageContainer.className = 'news-image-container';
     headlineAnchor.appendChild(headlineText);
-    headlineContainer.appendChild(headlineAnchor);
+    headlineContainer.appendChild(headlineText);
     imageContainer.appendChild(headlineImage);
-    listItem.appendChild(headlineContainer);
-    listItem.appendChild(imageContainer);
+    headlineAnchor.appendChild(headlineContainer);
+    headlineAnchor.appendChild(imageContainer);
+    listItem.appendChild(headlineAnchor);
     if (dataArray[i]['metadata:id']) {
       $stockNewsList.appendChild(listItem);
     } else $topNewsList.appendChild(listItem);
