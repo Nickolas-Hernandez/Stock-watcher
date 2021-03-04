@@ -162,6 +162,7 @@ function saveStockToLocalStorage() {
 }
 
 function generateWatchlistItem(dataObject) {
+  clearRelatedNews();
   var lastTradingDate = dataObject['Meta Data']['3. Last Refreshed'].slice(0, 10);
   var listItem = document.createElement('li');
   var ticker = document.createElement('p');
