@@ -246,10 +246,11 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    if (xhr.response['Error Message'] || xhr.response === {}) {
+    if (xhr.response['Error Message'] || xhr.response === {} || xhr.response.Note) {
       switchPage(null);
-      $suggestionBox.classList.add('hidden');
       $errorMessage.classList.remove('hidden');
+      $suggestionBox.classList.remove('active');
+      $spinnerContainer.classList.add('hidden');
       return;
     }
     if (isWatchlist === true) {
