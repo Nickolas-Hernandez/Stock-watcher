@@ -248,6 +248,7 @@ function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
   xhr.addEventListener('load', function () {
     if (xhr.response['Error Message'] || xhr.response === {}) {
       switchPage(null);
+      $suggestionBox.classList.add('hidden');
       $errorMessage.classList.remove('hidden');
       return;
     }
