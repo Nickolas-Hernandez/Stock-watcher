@@ -9,7 +9,7 @@ var $watchlistPage = document.querySelector('.watchlist-page');
 var $stockPage = document.querySelector('.stock-page');
 var $addToWatchlist = document.querySelector('.add-to-watchlist-wrapper');
 var $spinnerContainer = document.querySelector('.loading-icon-container');
-var $searchbarIcon = document.querySelector('.searchbar-loading-icon');
+var $searchbarLoadingIcon = document.querySelector('.searchbar-loading-icon');
 var $watchlistPlaceholder = document.querySelector('.watchlist-placeholder');
 var $errorMessage = document.querySelector('.error-container');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
@@ -21,14 +21,14 @@ var autoCompleteRequest = 'AUTO';
 // Functions
 function autoCompleteSuggest(event) {
   removeSuggestionList();
-  if (event.target.value.length >= 2) {
+  if (event.target.value.length < 3) $searchbarLoadingIcon.classList.add('hidden');
+  if (event.target.value.length >= 3) {
     sendRequestCNBC(autoCompleteRequest, null, event.target.value);
     $suggestionBox.classList.add('active');
   }
 }
 
 function removeSuggestionList() {
-  $suggestionBox.classList.remove('active');
   var currentItems = document.querySelectorAll('.auto-suggest-item');
   for (var i = 0; i < currentItems.length; i++) {
     currentItems[i].remove();
@@ -53,6 +53,8 @@ function submitSearch(event) {
 }
 
 function createAutoSuggestItem(response) {
+  var currentItems = document.querySelectorAll('.auto-suggest-item');
+  if (currentItems !== 0) removeSuggestionList();
   for (var i = 1; i < response.length; i++) {
     var suggestionItem = document.createElement('li');
     suggestionItem.className = 'auto-suggest-item';
@@ -271,7 +273,7 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
       data.suggestionData = responseObject;
-      $searchbarIcon.classList.add('hidden');
+      $searchbarLoadingIcon.classList.add('hidden');
       createAutoSuggestItem(responseObject);
     });
   } else if (requestType === trendingStoriesRequest) {
@@ -287,6 +289,7 @@ function sendRequestCNBC(requestType, ticker, input) {
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
       responseObject = responseObject.rss.channel.item;
+      if (responseObject === undefined) return;
       createNewsItems(responseObject);
       handleSpinner();
     });
@@ -298,8 +301,8 @@ function sendRequestCNBC(requestType, ticker, input) {
 
 // Event Listeners
 $searchInput.addEventListener('input', function () {
+  if (event.target.value.length > 2)$searchbarLoadingIcon.classList.remove('hidden');
   autoCompleteSuggest(event);
-  $searchbarIcon.classList.remove('hidden');
 });
 $suggestionBox.addEventListener('click', function () {
   loadSuggestion(event);
