@@ -346,7 +346,7 @@ $watchlistPage.addEventListener('click', function () {
   }
 });
 window.addEventListener('load', function () {
-  getTrendingStories();
+  // getTrendingStories();
   getWatchlistFromDataModel();
   removePlaceholder();
 });
