@@ -19,26 +19,6 @@ var companyNewsRequest = 'SYMBOL_NEWS';
 var autoCompleteRequest = 'AUTO';
 
 // Functions
-function autoCompleteSuggest(event) {
-  removeSuggestionList();
-  if (event.target.value.length < 3) $searchbarLoadingIcon.classList.add('hidden');
-  if (event.target.value.length >= 3) {
-    sendRequestCNBC(autoCompleteRequest, null, event.target.value);
-    $suggestionBox.classList.add('active');
-  }
-}
-
-function removeSuggestionList() {
-  var currentItems = document.querySelectorAll('.auto-suggest-item');
-  for (var i = 0; i < currentItems.length; i++) {
-    currentItems[i].remove();
-  }
-}
-
-function loadSuggestion(event) {
-  $searchInput.value = event.target.textContent;
-  removeSuggestionList();
-}
 
 function submitSearch(event) {
   $errorMessage.classList.add('hidden');
@@ -48,20 +28,20 @@ function submitSearch(event) {
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
   sendRequestCNBC(companyNewsRequest, $searchInput.value.toUpperCase(), null);
   $searchInput.value = '';
-  removeSuggestionList();
+  // removeSuggestionList();
   switchPage(event.target);
 }
 
-function createAutoSuggestItem(response) {
-  var currentItems = document.querySelectorAll('.auto-suggest-item');
-  if (currentItems !== 0) removeSuggestionList();
-  for (var i = 1; i < response.length; i++) {
-    var suggestionItem = document.createElement('li');
-    suggestionItem.className = 'auto-suggest-item';
-    suggestionItem.textContent = response[i].symbolName;
-    $suggestionBox.appendChild(suggestionItem);
-  }
-}
+// function createAutoSuggestItem(response) {
+//   var currentItems = document.querySelectorAll('.auto-suggest-item');
+//   if (currentItems !== 0) removeSuggestionList();
+//   for (var i = 1; i < response.length; i++) {
+//     var suggestionItem = document.createElement('li');
+//     suggestionItem.className = 'auto-suggest-item';
+//     suggestionItem.textContent = response[i].symbolName;
+//     $suggestionBox.appendChild(suggestionItem);
+//   }
+// }
 
 function getTrendingStories(event) {
   sendRequestCNBC(trendingStoriesRequest, null, null);
@@ -302,12 +282,12 @@ function sendRequestCNBC(requestType, ticker, input) {
 }
 
 // Event Listeners
-$searchInput.addEventListener('input', function () {
-  if (event.target.value.length > 2)$searchbarLoadingIcon.classList.remove('hidden');
-  autoCompleteSuggest(event);
-});
+// $searchInput.addEventListener('input', function () {
+//   if (event.target.value.length > 2)$searchbarLoadingIcon.classList.remove('hidden');
+//   autoCompleteSuggest(event);
+// });
 $suggestionBox.addEventListener('click', function () {
-  loadSuggestion(event);
+  // loadSuggestion(event);
   submitSearch(event);
 });
 $searchBar.addEventListener('submit', function () {
