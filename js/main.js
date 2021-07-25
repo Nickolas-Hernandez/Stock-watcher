@@ -19,7 +19,6 @@ var companyNewsRequest = 'SYMBOL_NEWS';
 var autoCompleteRequest = 'AUTO';
 
 // Functions
-
 function submitSearch(event) {
   $errorMessage.classList.add('hidden');
   data.currentStock = [];
@@ -28,23 +27,18 @@ function submitSearch(event) {
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
   sendRequestCNBC(companyNewsRequest, $searchInput.value.toUpperCase(), null);
   $searchInput.value = '';
-  // removeSuggestionList();
   switchPage(event.target);
 }
 
-// function createAutoSuggestItem(response) {
-//   var currentItems = document.querySelectorAll('.auto-suggest-item');
-//   if (currentItems !== 0) removeSuggestionList();
-//   for (var i = 1; i < response.length; i++) {
-//     var suggestionItem = document.createElement('li');
-//     suggestionItem.className = 'auto-suggest-item';
-//     suggestionItem.textContent = response[i].symbolName;
-//     $suggestionBox.appendChild(suggestionItem);
-//   }
-// }
-
 function getTrendingStories(event) {
-  sendRequestCNBC(trendingStoriesRequest, null, null);
+  // sendRequestCNBC(trendingStoriesRequest, null, null);
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `https://newsapi.org/v2/top-headlines?apikey=cf666bb39feb413aae7a9a8bca9531e3&country=us&category=business`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function () {
+    console.log(xhr.response);
+  });
+  xhr.send();
 }
 
 function createNewsItems(dataArray) {
@@ -282,12 +276,12 @@ function sendRequestCNBC(requestType, ticker, input) {
 }
 
 // Event Listeners
-// $searchInput.addEventListener('input', function () {
-//   if (event.target.value.length > 2)$searchbarLoadingIcon.classList.remove('hidden');
-//   autoCompleteSuggest(event);
-// });
+$searchInput.addEventListener('input', function () {
+  if (event.target.value.length > 2) {
+    $searchbarLoadingIcon.classList.remove('hidden');
+  }
+});
 $suggestionBox.addEventListener('click', function () {
-  // loadSuggestion(event);
   submitSearch(event);
 });
 $searchBar.addEventListener('submit', function () {
@@ -326,7 +320,7 @@ $watchlistPage.addEventListener('click', function () {
   }
 });
 window.addEventListener('load', function () {
-  // getTrendingStories();
+  getTrendingStories();
   getWatchlistFromDataModel();
   removePlaceholder();
 });
