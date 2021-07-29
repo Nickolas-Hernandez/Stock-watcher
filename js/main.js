@@ -33,12 +33,40 @@ function submitSearch(event) {
 function getTrendingStories(event) {
   // sendRequestCNBC(trendingStoriesRequest, null, null);
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://newsapi.org/v2/top-headlines?apikey=cf666bb39feb413aae7a9a8bca9531e3&country=us&category=business`);
+  xhr.open('GET', `https://newsapi.org/v2/top-headlines?apikey=cf666bb39feb413aae7a9a8bca9531e3&country=us&category=business&pageSize=10`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
     console.log(xhr.response);
+    appendTrendingStories(xhr.response['articles']);
   });
   xhr.send();
+}
+
+function appendTrendingStories(articlesData){
+  console.log(articlesData);
+  for (var i = 0; i < articlesData.length; i++) {
+    var listItem = document.createElement('li');
+    var headlineContainer = document.createElement('div');
+    var imageContainer = document.createElement('div');
+    var headlineText = document.createElement('h3');
+    var headlineImage = document.createElement('img');
+    var headlineAnchor = document.createElement('a');
+    headlineText.textContent = articlesData[i].title;
+    headlineImage.setAttribute('src', articlesData[i]['urlToImage']);
+    headlineAnchor.setAttribute('href', articlesData[i]['url']);
+    headlineAnchor.setAttribute('target', '_blank');
+    headlineAnchor.className = 'headline-anchor-tag row';
+    listItem.className = 'top-news-item';
+    headlineContainer.className = 'headline-container';
+    imageContainer.className = 'news-image-container';
+    headlineAnchor.appendChild(headlineText);
+    headlineContainer.appendChild(headlineText);
+    imageContainer.appendChild(headlineImage);
+    headlineAnchor.appendChild(headlineContainer);
+    headlineAnchor.appendChild(imageContainer);
+    listItem.appendChild(headlineAnchor);
+    $topNewsList.appendChild(listItem);
+  }
 }
 
 function createNewsItems(dataArray) {
