@@ -13,7 +13,6 @@ var $searchbarLoadingIcon = document.querySelector('.searchbar-loading-icon');
 var $watchlistPlaceholder = document.querySelector('.watchlist-placeholder');
 var $errorMessage = document.querySelector('.error-container');
 var dailyStatsRequest = 'TIME_SERIES_DAILY';
-var overviewStatsRequest = 'OVERVIEW';
 var trendingStoriesRequest = 'TRENDING';
 var companyNewsRequest = 'SYMBOL_NEWS';
 var autoCompleteRequest = 'AUTO';
@@ -23,15 +22,38 @@ function submitSearch(event) {
   $errorMessage.classList.add('hidden');
   data.currentStock = [];
   clearRelatedNews();
-  sendRequestAlphaVantage(overviewStatsRequest, $searchInput.value, false);
+  getOverviewStatsAV($searchInput.value);
   sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
   sendRequestCNBC(companyNewsRequest, $searchInput.value.toUpperCase(), null);
   $searchInput.value = '';
   switchPage(event.target);
 }
 
+function getOverviewStatsAV(ticker){
+  handleSpinner();
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function(){
+    if (xhr.response['Error Message'] || xhr.response === {} || xhr.response.Note) {
+      displayErrorMessages();
+    }
+    data.currentStock.push(xhr.response);
+    loadStats(data.currentStock);
+    handleSpinner();
+  });
+  xhr.send();
+}
+
+function displayErrorMessages(){
+  switchPage(null);
+  $errorMessage.classList.remove('hidden');
+  $suggestionBox.classList.remove('active');
+  $spinnerContainer.classList.add('hidden');
+  return;
+}
+
 function getTrendingStories(event) {
-  // sendRequestCNBC(trendingStoriesRequest, null, null);
   const xhr = new XMLHttpRequest();
   xhr.open('GET', `https://newsapi.org/v2/top-headlines?apikey=cf666bb39feb413aae7a9a8bca9531e3&country=us&category=business&pageSize=10`);
   xhr.responseType = 'json';
@@ -304,11 +326,6 @@ function sendRequestCNBC(requestType, ticker, input) {
 }
 
 // Event Listeners
-$searchInput.addEventListener('input', function () {
-  if (event.target.value.length > 2) {
-    $searchbarLoadingIcon.classList.remove('hidden');
-  }
-});
 $suggestionBox.addEventListener('click', function () {
   submitSearch(event);
 });
