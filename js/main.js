@@ -23,10 +23,26 @@ function submitSearch(event) {
   data.currentStock = [];
   clearRelatedNews();
   getOverviewStatsAV($searchInput.value);
-  sendRequestAlphaVantage(dailyStatsRequest, $searchInput.value, false);
+  getDailyStatsAV($searchInput.value);
   sendRequestCNBC(companyNewsRequest, $searchInput.value.toUpperCase(), null);
   $searchInput.value = '';
   switchPage(event.target);
+}
+
+function getDailyStatsAV(ticker){
+  handleSpinner();
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
+  xhr.responseType = 'json';
+  xhr.addEventListener('load', function(){
+    if (xhr.response['Error Message'] || xhr.response === {} || xhr.response.Note) {
+      displayErrorMessages();
+    }
+    data.currentStock.push(xhr.response);
+    loadStats(data.currentStock);
+    handleSpinner();
+  });
+  xhr.send();
 }
 
 function getOverviewStatsAV(ticker){
@@ -58,7 +74,6 @@ function getTrendingStories(event) {
   xhr.open('GET', `https://newsapi.org/v2/top-headlines?apikey=cf666bb39feb413aae7a9a8bca9531e3&country=us&category=business&pageSize=10`);
   xhr.responseType = 'json';
   xhr.addEventListener('load', function () {
-    console.log(xhr.response);
     appendTrendingStories(xhr.response['articles']);
   });
   xhr.send();
@@ -262,47 +277,13 @@ function removePlaceholder() {
   } else $watchlistPlaceholder.className = 'watchlist-placeholder';
 }
 
-// Request Functions
-function sendRequestAlphaVantage(functionType, ticker, isWatchlist) {
-  handleSpinner();
-  if (ticker !== null) ticker = ticker.toUpperCase();
-  var xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://www.alphavantage.co/query?function=${functionType}&symbol=${ticker}&apikey=CPOI5XYGUXDVNA28`);
-  xhr.responseType = 'json';
-  xhr.addEventListener('load', function () {
-    if (xhr.response['Error Message'] || xhr.response === {} || xhr.response.Note) {
-      switchPage(null);
-      $errorMessage.classList.remove('hidden');
-      $suggestionBox.classList.remove('active');
-      $spinnerContainer.classList.add('hidden');
-      return;
-    }
-    if (isWatchlist === true) {
-      generateWatchlistItem(xhr.response);
-    } else {
-      data.currentStock.push(xhr.response);
-      loadStats(data.currentStock);
-    }
-    handleSpinner();
-  });
-  xhr.send();
-}
-
 function sendRequestCNBC(requestType, ticker, input) {
   if (requestType !== autoCompleteRequest) handleSpinner();
   if (ticker !== null) ticker = ticker.toUpperCase();
   var xhr = new XMLHttpRequest();
   var responseObject;
   xhr.readyState = 'json';
-  if (requestType === autoCompleteRequest) {
-    xhr.open('GET', `https://cnbc.p.rapidapi.com/auto-complete?prefix=${input}`);
-    xhr.addEventListener('load', function () {
-      responseObject = JSON.parse(xhr.response);
-      data.suggestionData = responseObject;
-      $searchbarLoadingIcon.classList.add('hidden');
-      createAutoSuggestItem(responseObject);
-    });
-  } else if (requestType === trendingStoriesRequest) {
+  if (requestType === trendingStoriesRequest) {
     xhr.open('GET', 'https://cnbc.p.rapidapi.com/news/list-trending');
     xhr.addEventListener('load', function () {
       responseObject = JSON.parse(xhr.response);
